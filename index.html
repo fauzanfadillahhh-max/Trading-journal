@@ -811,6 +811,9 @@ tr:hover td {
     }
 }
 </style>
+
+<!-- Google reCAPTCHA v2 -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -1267,6 +1270,16 @@ tr:hover td {
 
                 </div>
 
+            </div>
+
+            <!-- GOOGLE reCAPTCHA -->
+            <div class="modal-body" style="padding-top:0;">
+                <div class="form-group" style="margin-bottom:0;">
+                    <div
+                        class="g-recaptcha"
+                        data-sitekey="6LfGk94tAAAAAONvoGCiO3wOCk8VHNocvIa-OR5J">
+                    </div>
+                </div>
             </div>
 
 
@@ -2552,6 +2565,14 @@ function resetAddForm() {
         button.textContent =
             "Simpan Trade";
     }
+
+    // Reset Google reCAPTCHA jika sudah dimuat
+    if (
+        typeof grecaptcha !== "undefined" &&
+        typeof grecaptcha.reset === "function"
+    ) {
+        grecaptcha.reset();
+    }
 }
 
 
@@ -2765,6 +2786,33 @@ async function submitTrade(event) {
         return;
     }
 
+
+    /*
+       GOOGLE reCAPTCHA VALIDATION
+       Trade hanya boleh disimpan jika CAPTCHA
+       sudah berhasil diverifikasi.
+    */
+    if (
+        typeof grecaptcha === "undefined" ||
+        typeof grecaptcha.getResponse !== "function"
+    ) {
+        showToast(
+            "reCAPTCHA belum siap. Tunggu beberapa detik lalu coba lagi.",
+            "error"
+        );
+        return;
+    }
+
+    const captchaResponse =
+        grecaptcha.getResponse();
+
+    if (!captchaResponse) {
+        showToast(
+            "Silakan centang CAPTCHA terlebih dahulu.",
+            "error"
+        );
+        return;
+    }
 
     const button =
         document.getElementById(
