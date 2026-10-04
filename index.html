@@ -827,6 +827,14 @@ tr:hover td {
         </div>
 
         <div class="header-actions">
+            <button class="btn btn-secondary" onclick="openBalanceModal()">
+                + Tambah Balance
+            </button>
+
+            <button class="btn btn-secondary" onclick="openBalanceModal()">
+                + Tambah Balance
+            </button>
+
             <button class="btn btn-danger" onclick="resetData()">
                 Reset Data
             </button>
@@ -1298,6 +1306,75 @@ tr:hover td {
 
 
 <!-- =====================================================
+     ADD BALANCE MODAL
+===================================================== -->
+
+<div class="modal-overlay" id="balanceModal">
+    <div class="modal">
+
+        <div class="modal-header">
+            <h3>Tambah Balance</h3>
+            <button class="close-btn" onclick="closeModal('balanceModal')">×</button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="form-group">
+                <label for="balanceAmount">Jumlah Balance ($)</label>
+
+                <input
+                    id="balanceAmount"
+                    type="number"
+                    step="0.01"
+                    min="0.01"
+                    placeholder="100"
+                    autocomplete="off">
+
+                <div class="helper">
+                    Contoh: masukkan 100 untuk menambah $100 ke balance saat ini.
+                </div>
+            </div>
+
+            <div class="detail-grid">
+
+                <div class="detail-item">
+                    <div class="label">Balance Saat Ini</div>
+                    <div class="value" id="balanceBeforeAdd">$0.00</div>
+                </div>
+
+                <div class="detail-item">
+                    <div class="label">Balance Setelah Ditambah</div>
+                    <div class="value" id="balanceAfterAdd">$0.00</div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="closeModal('balanceModal')">
+                Batal
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                id="saveBalanceBtn"
+                onclick="saveBalance()">
+                Tambah Balance
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- =====================================================
      RESULT MODAL
 ===================================================== -->
 
@@ -1641,6 +1718,7 @@ const db = firebase.database();
 
 const TRADES_PATH = "trades";
 const BALANCE_PATH = "balance";
+const BALANCE_HISTORY_PATH = "balanceHistory";
 
 
 /* =====================================================
@@ -4321,6 +4399,208 @@ function render() {
 
 
 /* =====================================================
+   ADD BALANCE
+===================================================== */
+
+function openBalanceModal() {
+
+    const input = document.getElementById("balanceAmount");
+    const before = document.getElementById("balanceBeforeAdd");
+    const after = document.getElementById("balanceAfterAdd");
+
+    if (input) {
+        input.value = "";
+    }
+
+    if (before) {
+        before.textContent = money(balanceAwal);
+    }
+
+    if (after) {
+        after.textContent = money(balanceAwal);
+    }
+
+    const modal = document.getElementById("balanceModal");
+
+    if (modal) {
+        modal.classList.add("active");
+    }
+
+    setTimeout(() => {
+        if (input) {
+            input.focus();
+        }
+    }, 100);
+}
+
+
+function updateBalancePreview() {
+
+    const input = document.getElementById("balanceAmount");
+    const after = document.getElementById("balanceAfterAdd");
+
+    if (!input || !after) {
+        return;
+    }
+
+    const amount = Number(input.value);
+
+    const safeAmount =
+        Number.isFinite(amount) && amount > 0
+            ? amount
+            : 0;
+
+    after.textContent =
+        money(
+            (Number(balanceAwal) || 0) +
+            safeAmount
+        );
+}
+
+
+async function saveBalance() {
+
+    const input = document.getElementById("balanceAmount");
+    const button = document.getElementById("saveBalanceBtn");
+
+    if (!input) {
+        return;
+    }
+
+    const amount = Number(input.value);
+
+    if (!Number.isFinite(amount) || amount <= 0) {
+
+        showToast(
+            "Masukkan jumlah balance yang valid.",
+            "error"
+        );
+
+        input.focus();
+        return;
+    }
+
+    if (amount > 1000000000) {
+
+        showToast(
+            "Jumlah balance terlalu besar.",
+            "error"
+        );
+
+        return;
+    }
+
+    try {
+
+        if (button) {
+            button.disabled = true;
+            button.textContent = "Menyimpan...";
+        }
+
+        await ensureAuth();
+
+        /*
+         * Ambil nilai terbaru langsung dari Firebase sebelum menambah.
+         * Ini mencegah penambahan memakai nilai balance lama.
+         */
+        const snapshot =
+            await db.ref(BALANCE_PATH).get();
+
+        let currentBalance =
+            Number(balanceAwal) || 0;
+
+        if (snapshot.exists()) {
+
+            const cloudBalance =
+                Number(snapshot.val());
+
+            if (Number.isFinite(cloudBalance)) {
+                currentBalance = cloudBalance;
+            }
+        }
+
+        const newBalance =
+            currentBalance + amount;
+
+
+        await db
+            .ref(BALANCE_PATH)
+            .set(newBalance);
+
+
+        /*
+         * Simpan riwayat deposit secara terpisah.
+         * Deposit tidak dihitung sebagai PnL.
+         */
+        const historyRef =
+            db.ref(BALANCE_HISTORY_PATH).push();
+
+        await historyRef.set({
+            type: "deposit",
+            amount: amount,
+            balanceBefore: currentBalance,
+            balanceAfter: newBalance,
+            createdAt: new Date().toISOString()
+        });
+
+
+        balanceAwal = newBalance;
+
+        backupToLocal();
+        render();
+        updateStorageInfo();
+
+        closeModal("balanceModal");
+
+        showToast(
+            "Balance berhasil ditambahkan " +
+            money(amount) +
+            ".",
+            "success"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Add balance error:",
+            error
+        );
+
+        showToast(
+            "Gagal menambah balance: " +
+            (
+                error.message ||
+                error.code ||
+                "Unknown error"
+            ),
+            "error"
+        );
+
+    } finally {
+
+        if (button) {
+            button.disabled = false;
+            button.textContent = "Tambah Balance";
+        }
+    }
+}
+
+
+document.addEventListener(
+    "input",
+    event => {
+
+        if (
+            event.target &&
+            event.target.id === "balanceAmount"
+        ) {
+            updateBalancePreview();
+        }
+    }
+);
+
+
+/* =====================================================
    RESET DATA
 ===================================================== */
 
@@ -4360,8 +4640,11 @@ async function resetData() {
 
             db
                 .ref(BALANCE_PATH)
-                .set(0)
+                .set(0),
 
+            db
+                .ref(BALANCE_HISTORY_PATH)
+                .set({})
         ]);
 
 
