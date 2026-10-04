@@ -112,6 +112,14 @@ button {
     cursor:not-allowed;
 }
 
+/* BALANCE EDIT BUTTON */
+
+.balance-edit-btn {
+    margin-top:12px;
+    padding:8px 11px;
+    font-size:12px;
+}
+
 /* CLOUD */
 
 .cloud-status {
@@ -885,8 +893,23 @@ tr:hover td {
         </div>
 
         <div class="stat-card">
-            <div class="stat-label">Starting Balance</div>
-            <div class="stat-value" id="startingBalance">$0.00</div>
+
+            <div class="stat-label">
+                Starting Balance
+            </div>
+
+            <div
+                class="stat-value"
+                id="startingBalance">
+                $0.00
+            </div>
+
+            <button
+                class="btn btn-secondary balance-edit-btn"
+                onclick="openBalanceModal()">
+                ✎ Edit Balance
+            </button>
+
         </div>
 
     </div>
@@ -913,7 +936,10 @@ tr:hover td {
         </div>
 
         <div class="storage-bar">
-            <div class="storage-progress" id="storageProgress"></div>
+            <div
+                class="storage-progress"
+                id="storageProgress">
+            </div>
         </div>
 
         <div class="storage-note">
@@ -931,18 +957,48 @@ tr:hover td {
 
             <div class="filters">
 
-                <select id="filterStatus" onchange="renderTrades()">
-                    <option value="all">Semua Status</option>
-                    <option value="Wait">Wait</option>
-                    <option value="Triggered">Triggered</option>
+                <select
+                    id="filterStatus"
+                    onchange="renderTrades()">
+
+                    <option value="all">
+                        Semua Status
+                    </option>
+
+                    <option value="Wait">
+                        Wait
+                    </option>
+
+                    <option value="Triggered">
+                        Triggered
+                    </option>
+
                 </select>
 
-                <select id="filterResult" onchange="renderTrades()">
-                    <option value="all">Semua Hasil</option>
-                    <option value="Win">Win</option>
-                    <option value="Loss">Loss</option>
-                    <option value="BE">BE</option>
-                    <option value="none">Belum Close</option>
+                <select
+                    id="filterResult"
+                    onchange="renderTrades()">
+
+                    <option value="all">
+                        Semua Hasil
+                    </option>
+
+                    <option value="Win">
+                        Win
+                    </option>
+
+                    <option value="Loss">
+                        Loss
+                    </option>
+
+                    <option value="BE">
+                        BE
+                    </option>
+
+                    <option value="none">
+                        Belum Close
+                    </option>
+
                 </select>
 
             </div>
@@ -1186,7 +1242,9 @@ tr:hover td {
                 </div>
 
 
-                <div class="form-group" id="tpInputGroup">
+                <div
+                    class="form-group"
+                    id="tpInputGroup">
 
                     <label for="tp">
                         TP Price
@@ -1518,6 +1576,102 @@ tr:hover td {
                 id="fullImage"
                 src=""
                 alt="Trade Image">
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     BALANCE MODAL
+===================================================== -->
+
+<div class="modal-overlay" id="balanceModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3>Edit Starting Balance</h3>
+
+            <button
+                class="close-btn"
+                onclick="closeModal('balanceModal')">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <div class="form-group">
+
+                <label for="balanceInput">
+                    Starting Balance (USD)
+                </label>
+
+                <input
+                    id="balanceInput"
+                    type="number"
+                    min="0"
+                    step="any"
+                    placeholder="100">
+
+                <div class="helper">
+                    Contoh: 100 = $100.00.
+                    Balance ini hanya mengubah saldo awal,
+                    bukan data trade.
+                </div>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <div class="label">
+                    Current Balance
+                </div>
+
+                <div
+                    class="value"
+                    id="balancePreview">
+                    $0.00
+                </div>
+
+            </div>
+
+
+            <div
+                class="helper"
+                style="margin-top:10px;">
+
+                Current Balance =
+                Starting Balance + Total PnL
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="closeModal('balanceModal')">
+                Batal
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                id="saveBalanceBtn"
+                onclick="saveStartingBalance()">
+                Simpan Balance
+            </button>
 
         </div>
 
@@ -2108,6 +2262,7 @@ async function loadFromCloud() {
             if (Number.isFinite(value)) {
                 balanceAwal = value;
             }
+
         } else {
 
             balanceAwal = 0;
@@ -2215,18 +2370,222 @@ async function loadFromCloud() {
 
 
 /* =====================================================
-   SAVE BALANCE
+   SAVE BALANCE TO FIREBASE
 ===================================================== */
 
-async function saveBalanceToCloud() {
+async function saveBalanceToCloud(value) {
 
     await ensureAuth();
 
     await db
         .ref(BALANCE_PATH)
         .set(
-            Number(balanceAwal) || 0
+            Number(value) || 0
         );
+}
+
+
+/* =====================================================
+   BALANCE MODAL
+===================================================== */
+
+function openBalanceModal() {
+
+    if (!isReady) {
+
+        showToast(
+            "Tunggu sampai cloud terhubung.",
+            "error"
+        );
+
+        return;
+    }
+
+    const input =
+        document.getElementById(
+            "balanceInput"
+        );
+
+    if (input) {
+
+        input.value =
+            Number(balanceAwal) || 0;
+    }
+
+    updateBalancePreview();
+
+    openModal("balanceModal");
+
+    setTimeout(() => {
+
+        input?.focus();
+
+        input?.select();
+
+    }, 100);
+}
+
+
+/* =====================================================
+   BALANCE PREVIEW
+===================================================== */
+
+function updateBalancePreview() {
+
+    const input =
+        document.getElementById(
+            "balanceInput"
+        );
+
+    const preview =
+        document.getElementById(
+            "balancePreview"
+        );
+
+    if (
+        !input ||
+        !preview
+    ) {
+        return;
+    }
+
+
+    const value =
+        Number(input.value);
+
+
+    const starting =
+        Number.isFinite(value) &&
+        value >= 0
+            ? value
+            : 0;
+
+
+    let totalPnl = 0;
+
+
+    trades.forEach(trade => {
+
+        if (!trade.hasil) {
+            return;
+        }
+
+
+        const calc =
+            hitungTrade(trade);
+
+
+        totalPnl +=
+            Number(calc.pnl) || 0;
+    });
+
+
+    preview.textContent =
+        money(
+            starting + totalPnl
+        );
+}
+
+
+/* =====================================================
+   SAVE STARTING BALANCE
+===================================================== */
+
+async function saveStartingBalance() {
+
+    const input =
+        document.getElementById(
+            "balanceInput"
+        );
+
+    const button =
+        document.getElementById(
+            "saveBalanceBtn"
+        );
+
+
+    const value =
+        Number(
+            input?.value
+        );
+
+
+    if (
+        !Number.isFinite(value) ||
+        value < 0
+    ) {
+
+        showToast(
+            "Starting Balance harus berupa angka 0 atau lebih.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (button) {
+
+        button.disabled = true;
+
+        button.textContent =
+            "Menyimpan...";
+    }
+
+
+    try {
+
+        await saveBalanceToCloud(
+            value
+        );
+
+
+        balanceAwal =
+            value;
+
+
+        render();
+
+        closeModal(
+            "balanceModal"
+        );
+
+
+        showToast(
+            "Starting Balance berhasil disimpan ke Firebase.",
+            "success"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Save balance error:",
+            error
+        );
+
+
+        showToast(
+            "Gagal menyimpan balance: " +
+            (
+                error.message ||
+                error.code ||
+                "Unknown error"
+            ),
+            "error"
+        );
+
+
+    } finally {
+
+        if (button) {
+
+            button.disabled = false;
+
+            button.textContent =
+                "Simpan Balance";
+        }
+    }
 }
 
 
@@ -2677,8 +3036,6 @@ async function submitTrade(event) {
                 .value
         );
 
-
-    /* VALIDATION */
 
     if (!pair) {
 
@@ -4136,6 +4493,11 @@ function updateStats() {
         money(balanceAwal);
 
 
+    /* UPDATE BALANCE PREVIEW */
+
+    updateBalancePreview();
+
+
     /* COLOR TOTAL PNL */
 
     const pnlElement =
@@ -4500,6 +4862,24 @@ document.addEventListener(
         toggleTpInput();
 
         updateStorageInfo();
+
+
+        /* BALANCE INPUT LISTENER */
+
+        const balanceInput =
+            document.getElementById(
+                "balanceInput"
+            );
+
+
+        if (balanceInput) {
+
+            balanceInput.addEventListener(
+                "input",
+                updateBalancePreview
+            );
+        }
+
 
         try {
 
