@@ -1538,7 +1538,7 @@ tr:hover td {
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<!-- App Check Enterprise tidak diaktifkan di versi ini karena Site Key yang diberikan adalah reCAPTCHA v2. -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check-compat.js"></script>
 
 
 <script>
@@ -1579,6 +1579,57 @@ const firebaseConfig = {
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
+
+
+/* =====================================================
+   FIREBASE APP CHECK - FRAUD DEFENSE
+   ===================================================== */
+
+const APP_CHECK_SITE_KEY =
+    "6LfGk94tAAAAAONvoGCiO3wOCk8VHNocvIa-OR5J";
+
+let appCheck = null;
+
+try {
+
+    if (
+        firebase.appCheck &&
+        typeof firebase.appCheck === "function" &&
+        firebase.appCheck.ReCaptchaEnterpriseProvider
+    ) {
+
+        appCheck = firebase.appCheck();
+
+        appCheck.activate(
+            new firebase.appCheck.ReCaptchaEnterpriseProvider(
+                APP_CHECK_SITE_KEY
+            ),
+            true
+        );
+
+        console.log(
+            "[App Check] reCAPTCHA Enterprise / Fraud Defense diaktifkan."
+        );
+
+    } else {
+
+        console.warn(
+            "[App Check] SDK/provider reCAPTCHA Enterprise tidak tersedia."
+        );
+    }
+
+} catch (error) {
+
+    console.error(
+        "[App Check] Gagal aktivasi:",
+        error
+    );
+}
+
+
+/* =====================================================
+   AUTH + DATABASE
+===================================================== */
 
 const auth = firebase.auth();
 const db = firebase.database();
@@ -2111,9 +2162,24 @@ async function loadFromCloud() {
             if (Number.isFinite(value)) {
                 balanceAwal = value;
             }
+
         } else {
 
-            balanceAwal = 0;
+            /*
+             * JANGAN mengubah balanceAwal menjadi 0
+             * hanya karena node Firebase tidak ditemukan.
+             *
+             * Node yang tidak ada bisa terjadi karena:
+             * - data belum selesai termuat
+             * - rules/auth bermasalah
+             * - koneksi berubah
+             * - database node memang belum pernah dibuat
+             *
+             * State yang sudah ada dipertahankan.
+             */
+            console.warn(
+                "[Cloud] Balance node tidak ditemukan. State lokal dipertahankan."
+            );
         }
 
 
@@ -2121,8 +2187,6 @@ async function loadFromCloud() {
             await db
                 .ref(TRADES_PATH)
                 .get();
-
-        trades = [];
 
         if (tradesSnapshot.exists()) {
 
@@ -2148,6 +2212,17 @@ async function loadFromCloud() {
                         });
 
             }
+
+        } else {
+
+            /*
+             * JANGAN melakukan trades = [].
+             * Jika cloud sementara mengembalikan snapshot kosong,
+             * data state yang sudah ada tidak boleh dihapus.
+             */
+            console.warn(
+                "[Cloud] Trades node tidak ditemukan. State lokal dipertahankan."
+            );
         }
 
 
@@ -4270,15 +4345,22 @@ async function resetData() {
         await ensureAuth();
 
 
+        /*
+         * Gunakan nilai eksplisit untuk reset, bukan remove().
+         *
+         * Ini penting karena listener sekarang sengaja mengabaikan
+         * snapshot yang tidak ada agar tidak menyebabkan data hilang
+         * akibat kondisi cloud sementara.
+         */
         await Promise.all([
 
             db
                 .ref(TRADES_PATH)
-                .remove(),
+                .set({}),
 
             db
                 .ref(BALANCE_PATH)
-                .remove()
+                .set(0)
 
         ]);
 
@@ -4423,6 +4505,29 @@ function listenRealtimeTrades() {
                 }
 
 
+                /*
+                 * PENTING:
+                 * Jangan pernah mengosongkan `trades` hanya karena
+                 * snapshot tidak ada / bernilai null.
+                 *
+                 * Jika node Firebase hilang sementara, state yang sudah
+                 * tampil dipertahankan agar listener tidak menyebabkan
+                 * data "menghilang" secara tiba-tiba.
+                 *
+                 * Reset data yang disengaja dilakukan oleh fungsi
+                 * resetData(), bukan oleh listener.
+                 */
+
+                if (!snapshot.exists()) {
+
+                    console.warn(
+                        "[Realtime] Trades snapshot kosong/tidak ada. State dipertahankan."
+                    );
+
+                    return;
+                }
+
+
                 const value =
                     snapshot.val();
 
@@ -4432,22 +4537,24 @@ function listenRealtimeTrades() {
                     typeof value !== "object"
                 ) {
 
-                    trades = [];
+                    console.warn(
+                        "[Realtime] Format trades tidak valid. State dipertahankan."
+                    );
 
-                } else {
-
-                    trades =
-                        Object.keys(value)
-                            .map(key => {
-
-                                return {
-                                    id:key,
-                                    ...(value[key] || {})
-                                };
-
-                            });
-
+                    return;
                 }
+
+
+                trades =
+                    Object.keys(value)
+                        .map(key => {
+
+                            return {
+                                id:key,
+                                ...(value[key] || {})
+                            };
+
+                        });
 
 
                 trades.sort(
@@ -4494,28 +4601,41 @@ function listenRealtimeBalance() {
             "value",
             snapshot => {
 
+                /*
+                 * Jangan reset balanceAwal ke 0 hanya karena snapshot
+                 * tidak ada. Pertahankan state terakhir yang valid.
+                 */
                 if (!snapshot.exists()) {
 
-                    balanceAwal = 0;
+                    console.warn(
+                        "[Realtime] Balance snapshot kosong/tidak ada. State dipertahankan."
+                    );
 
-                } else {
-
-                    const value =
-                        Number(
-                            snapshot.val()
-                        );
-
-                    if (
-                        Number.isFinite(value)
-                    ) {
-
-                        balanceAwal =
-                            value;
-                    }
+                    return;
                 }
 
 
-                render();
+                const value =
+                    Number(
+                        snapshot.val()
+                    );
+
+
+                if (
+                    Number.isFinite(value)
+                ) {
+
+                    balanceAwal =
+                        value;
+
+                    render();
+
+                } else {
+
+                    console.warn(
+                        "[Realtime] Nilai balance tidak valid. State dipertahankan."
+                    );
+                }
             },
 
             error => {
