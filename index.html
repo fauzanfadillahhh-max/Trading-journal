@@ -548,6 +548,38 @@ tr:hover td {
     margin-top:6px;
 }
 
+/* RECAPTCHA */
+
+.captcha-container {
+    margin-top:18px;
+    margin-bottom:5px;
+    padding:12px;
+    background:#0d131a;
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.captcha-title {
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:10px;
+}
+
+.g-recaptcha {
+    transform-origin:0 0;
+}
+
+@media (max-width:380px) {
+    .g-recaptcha {
+        transform:scale(.82);
+    }
+
+    .captcha-container {
+        min-height:80px;
+    }
+}
+
 /* IMAGE UPLOAD */
 
 .file-upload {
@@ -811,8 +843,14 @@ tr:hover td {
     }
 }
 </style>
+
 <!-- Google reCAPTCHA v2 -->
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script
+    src="https://www.google.com/recaptcha/api.js"
+    async
+    defer>
+</script>
+
 </head>
 
 <body>
@@ -827,47 +865,89 @@ tr:hover td {
         </div>
 
         <div class="header-actions">
-            <button class="btn btn-secondary" onclick="openBalanceModal()">
+
+            <button
+                class="btn btn-secondary"
+                onclick="openBalanceModal()">
                 + Tambah Balance
             </button>
 
-            <button class="btn btn-danger" onclick="resetData()">
+            <button
+                class="btn btn-danger"
+                onclick="resetData()">
                 Reset Data
             </button>
 
-            <button class="btn btn-primary" onclick="openAddModal()">
+            <button
+                class="btn btn-primary"
+                onclick="openAddModal()">
                 + Tambah Trade
             </button>
+
         </div>
     </div>
 
     <!-- CLOUD STATUS -->
     <div class="cloud-status">
-        <span class="cloud-dot" id="cloudDot"></span>
-        <span id="cloudText">Menghubungkan ke cloud...</span>
+        <span
+            class="cloud-dot"
+            id="cloudDot">
+        </span>
+
+        <span id="cloudText">
+            Menghubungkan ke cloud...
+        </span>
     </div>
 
     <!-- MAIN STATS -->
     <div class="stats-grid">
 
         <div class="stat-card">
-            <div class="stat-label">Current Balance</div>
-            <div class="stat-value" id="currentBalance">$0.00</div>
+            <div class="stat-label">
+                Current Balance
+            </div>
+
+            <div
+                class="stat-value"
+                id="currentBalance">
+                $0.00
+            </div>
         </div>
 
         <div class="stat-card">
-            <div class="stat-label">Total PnL</div>
-            <div class="stat-value" id="totalPnl">$0.00</div>
+            <div class="stat-label">
+                Total PnL
+            </div>
+
+            <div
+                class="stat-value"
+                id="totalPnl">
+                $0.00
+            </div>
         </div>
 
         <div class="stat-card">
-            <div class="stat-label">Closed Trades</div>
-            <div class="stat-value" id="tradeClosed">0</div>
+            <div class="stat-label">
+                Closed Trades
+            </div>
+
+            <div
+                class="stat-value"
+                id="tradeClosed">
+                0
+            </div>
         </div>
 
         <div class="stat-card">
-            <div class="stat-label">Win Rate</div>
-            <div class="stat-value" id="winRate">0%</div>
+            <div class="stat-label">
+                Win Rate
+            </div>
+
+            <div
+                class="stat-value"
+                id="winRate">
+                0%
+            </div>
         </div>
 
     </div>
@@ -876,23 +956,51 @@ tr:hover td {
     <div class="extra-stats">
 
         <div class="stat-card">
-            <div class="stat-label">Total Profit</div>
-            <div class="stat-value green" id="totalProfit">$0.00</div>
+            <div class="stat-label">
+                Total Profit
+            </div>
+
+            <div
+                class="stat-value green"
+                id="totalProfit">
+                $0.00
+            </div>
         </div>
 
         <div class="stat-card">
-            <div class="stat-label">Total Loss</div>
-            <div class="stat-value red" id="totalLoss">$0.00</div>
+            <div class="stat-label">
+                Total Loss
+            </div>
+
+            <div
+                class="stat-value red"
+                id="totalLoss">
+                $0.00
+            </div>
         </div>
 
         <div class="stat-card">
-            <div class="stat-label">Profit Factor</div>
-            <div class="stat-value" id="profitFactor">0</div>
+            <div class="stat-label">
+                Profit Factor
+            </div>
+
+            <div
+                class="stat-value"
+                id="profitFactor">
+                0
+            </div>
         </div>
 
         <div class="stat-card">
-            <div class="stat-label">Starting Balance</div>
-            <div class="stat-value" id="startingBalance">$0.00</div>
+            <div class="stat-label">
+                Starting Balance
+            </div>
+
+            <div
+                class="stat-value"
+                id="startingBalance">
+                $0.00
+            </div>
         </div>
 
     </div>
@@ -903,6 +1011,7 @@ tr:hover td {
         <div class="storage-info">
 
             <div>
+
                 <div class="storage-label">
                     Cloud Storage (Realtime DB)
                 </div>
@@ -910,16 +1019,24 @@ tr:hover td {
                 <div class="storage-note">
                     Screenshot dikompres lalu disimpan sebagai Base64.
                 </div>
+
             </div>
 
-            <div class="storage-value" id="storageValue">
+            <div
+                class="storage-value"
+                id="storageValue">
                 Menghitung...
             </div>
 
         </div>
 
         <div class="storage-bar">
-            <div class="storage-progress" id="storageProgress"></div>
+
+            <div
+                class="storage-progress"
+                id="storageProgress">
+            </div>
+
         </div>
 
         <div class="storage-note">
@@ -933,22 +1050,54 @@ tr:hover td {
 
         <div class="panel-header">
 
-            <h2>Trade History</h2>
+            <h2>
+                Trade History
+            </h2>
 
             <div class="filters">
 
-                <select id="filterStatus" onchange="renderTrades()">
-                    <option value="all">Semua Status</option>
-                    <option value="Wait">Wait</option>
-                    <option value="Triggered">Triggered</option>
+                <select
+                    id="filterStatus"
+                    onchange="renderTrades()">
+
+                    <option value="all">
+                        Semua Status
+                    </option>
+
+                    <option value="Wait">
+                        Wait
+                    </option>
+
+                    <option value="Triggered">
+                        Triggered
+                    </option>
+
                 </select>
 
-                <select id="filterResult" onchange="renderTrades()">
-                    <option value="all">Semua Hasil</option>
-                    <option value="Win">Win</option>
-                    <option value="Loss">Loss</option>
-                    <option value="BE">BE</option>
-                    <option value="none">Belum Close</option>
+                <select
+                    id="filterResult"
+                    onchange="renderTrades()">
+
+                    <option value="all">
+                        Semua Hasil
+                    </option>
+
+                    <option value="Win">
+                        Win
+                    </option>
+
+                    <option value="Loss">
+                        Loss
+                    </option>
+
+                    <option value="BE">
+                        BE
+                    </option>
+
+                    <option value="none">
+                        Belum Close
+                    </option>
+
                 </select>
 
             </div>
@@ -994,13 +1143,17 @@ tr:hover td {
      ADD TRADE MODAL
 ===================================================== -->
 
-<div class="modal-overlay" id="addModal">
+<div
+    class="modal-overlay"
+    id="addModal">
 
     <div class="modal">
 
         <div class="modal-header">
 
-            <h3>Tambah Trade</h3>
+            <h3>
+                Tambah Trade
+            </h3>
 
             <button
                 class="close-btn"
@@ -1192,7 +1345,9 @@ tr:hover td {
                 </div>
 
 
-                <div class="form-group" id="tpInputGroup">
+                <div
+                    class="form-group"
+                    id="tpInputGroup">
 
                     <label for="tp">
                         TP Price
@@ -1273,6 +1428,28 @@ tr:hover td {
 
                 </div>
 
+
+                <!-- =================================================
+                     reCAPTCHA CHECKBOX
+                ================================================== -->
+
+                <div class="form-group">
+
+                    <div class="captcha-container">
+
+                        <div class="captcha-title">
+                            Verifikasi sebelum menyimpan trade
+                        </div>
+
+                        <div
+                            class="g-recaptcha"
+                            data-sitekey="6Lc4n94tAAAAADwfQ11a2zhHEgubh931pUrtrLT8">
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
 
 
@@ -1305,18 +1482,33 @@ tr:hover td {
      ADD BALANCE MODAL
 ===================================================== -->
 
-<div class="modal-overlay" id="balanceModal">
+<div
+    class="modal-overlay"
+    id="balanceModal">
+
     <div class="modal">
 
         <div class="modal-header">
-            <h3>Tambah Balance</h3>
-            <button class="close-btn" onclick="closeModal('balanceModal')">×</button>
+
+            <h3>
+                Tambah Balance
+            </h3>
+
+            <button
+                class="close-btn"
+                onclick="closeModal('balanceModal')">
+                ×
+            </button>
+
         </div>
 
         <div class="modal-body">
 
             <div class="form-group">
-                <label for="balanceAmount">Jumlah Balance ($)</label>
+
+                <label for="balanceAmount">
+                    Jumlah Balance ($)
+                </label>
 
                 <input
                     id="balanceAmount"
@@ -1329,18 +1521,37 @@ tr:hover td {
                 <div class="helper">
                     Contoh: masukkan 100 untuk menambah $100 ke balance saat ini.
                 </div>
+
             </div>
 
             <div class="detail-grid">
 
                 <div class="detail-item">
-                    <div class="label">Balance Saat Ini</div>
-                    <div class="value" id="balanceBeforeAdd">$0.00</div>
+
+                    <div class="label">
+                        Balance Saat Ini
+                    </div>
+
+                    <div
+                        class="value"
+                        id="balanceBeforeAdd">
+                        $0.00
+                    </div>
+
                 </div>
 
                 <div class="detail-item">
-                    <div class="label">Balance Setelah Ditambah</div>
-                    <div class="value" id="balanceAfterAdd">$0.00</div>
+
+                    <div class="label">
+                        Balance Setelah Ditambah
+                    </div>
+
+                    <div
+                        class="value"
+                        id="balanceAfterAdd">
+                        $0.00
+                    </div>
+
                 </div>
 
             </div>
@@ -1367,6 +1578,7 @@ tr:hover td {
         </div>
 
     </div>
+
 </div>
 
 
@@ -1374,13 +1586,17 @@ tr:hover td {
      RESULT MODAL
 ===================================================== -->
 
-<div class="modal-overlay" id="resultModal">
+<div
+    class="modal-overlay"
+    id="resultModal">
 
     <div class="modal">
 
         <div class="modal-header">
 
-            <h3>Close Trade</h3>
+            <h3>
+                Close Trade
+            </h3>
 
             <button
                 class="close-btn"
@@ -1389,7 +1605,6 @@ tr:hover td {
             </button>
 
         </div>
-
 
         <div class="modal-body">
 
@@ -1538,13 +1753,17 @@ tr:hover td {
      DETAIL MODAL
 ===================================================== -->
 
-<div class="modal-overlay" id="detailModal">
+<div
+    class="modal-overlay"
+    id="detailModal">
 
     <div class="modal">
 
         <div class="modal-header">
 
-            <h3>Detail Trade</h3>
+            <h3>
+                Detail Trade
+            </h3>
 
             <button
                 class="close-btn"
@@ -1569,7 +1788,9 @@ tr:hover td {
      FULL IMAGE MODAL
 ===================================================== -->
 
-<div class="modal-overlay" id="imageModal">
+<div
+    class="modal-overlay"
+    id="imageModal">
 
     <div class="modal image-modal">
 
@@ -1601,7 +1822,10 @@ tr:hover td {
 </div>
 
 
-<div id="toast" class="toast"></div>
+<div
+    id="toast"
+    class="toast">
+</div>
 
 
 <!-- =====================================================
@@ -1609,8 +1833,11 @@ tr:hover td {
 ===================================================== -->
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check-compat.js"></script>
 
 
@@ -1658,8 +1885,21 @@ if (!firebase.apps.length) {
    FIREBASE APP CHECK - FRAUD DEFENSE
    ===================================================== */
 
+/*
+ * PENTING:
+ *
+ * Ini sengaja TIDAK diganti dengan key reCAPTCHA v2.
+ *
+ * APP_CHECK_SITE_KEY adalah key untuk Firebase App Check
+ * / reCAPTCHA Enterprise.
+ *
+ * Key reCAPTCHA checkbox ada di HTML:
+ *
+ * data-sitekey="6Lc4n94tAAAAADwfQ11a2zhHEgubh931pUrtrLT8"
+ */
+
 const APP_CHECK_SITE_KEY =
-    "6Lc4n94tAAAAADwfQ11a2zhHEgubh931pUrtrLT8";
+    "6LfGk94tAAAAAONvoGCiO3wOCk8VHNocvIa-OR5J";
 
 let appCheck = null;
 
@@ -1671,7 +1911,8 @@ try {
         firebase.appCheck.ReCaptchaEnterpriseProvider
     ) {
 
-        appCheck = firebase.appCheck();
+        appCheck =
+            firebase.appCheck();
 
         appCheck.activate(
             new firebase.appCheck.ReCaptchaEnterpriseProvider(
@@ -1704,17 +1945,25 @@ try {
    AUTH + DATABASE
 ===================================================== */
 
-const auth = firebase.auth();
-const db = firebase.database();
+const auth =
+    firebase.auth();
+
+const db =
+    firebase.database();
 
 
 /* =====================================================
    DATABASE PATH
 ===================================================== */
 
-const TRADES_PATH = "trades";
-const BALANCE_PATH = "balance";
-const BALANCE_HISTORY_PATH = "balanceHistory";
+const TRADES_PATH =
+    "trades";
+
+const BALANCE_PATH =
+    "balance";
+
+const BALANCE_HISTORY_PATH =
+    "balanceHistory";
 
 
 /* =====================================================
@@ -1722,6 +1971,7 @@ const BALANCE_HISTORY_PATH = "balanceHistory";
 ===================================================== */
 
 let balanceAwal = 0;
+
 let trades = [];
 
 let activeResultIndex = null;
@@ -1739,21 +1989,29 @@ let authPromise = null;
 
 function parsePrice(v) {
 
-    if (v === null || v === undefined) {
+    if (
+        v === null ||
+        v === undefined
+    ) {
         return NaN;
     }
 
-    let s = String(v)
-        .trim()
-        .replace(/,/g, ".");
+    let s =
+        String(v)
+            .trim()
+            .replace(/,/g, ".");
 
     if (s === "") {
         return NaN;
     }
 
-    const n = Number(s);
+    const n =
+        Number(s);
 
-    if (!Number.isFinite(n) || n <= 0) {
+    if (
+        !Number.isFinite(n) ||
+        n <= 0
+    ) {
         return NaN;
     }
 
@@ -1763,56 +2021,81 @@ function parsePrice(v) {
 
 function price(v) {
 
-    if (v === null || v === undefined || v === "") {
+    if (
+        v === null ||
+        v === undefined ||
+        v === ""
+    ) {
         return "0";
     }
 
-    const n = Number(v);
+    const n =
+        Number(v);
 
-    if (!Number.isFinite(n) || n === 0) {
+    if (
+        !Number.isFinite(n) ||
+        n === 0
+    ) {
         return "0";
     }
 
-    return n.toLocaleString("en-US", {
-        useGrouping:false,
-        minimumFractionDigits:0,
-        maximumFractionDigits:12
-    });
+    return n.toLocaleString(
+        "en-US",
+        {
+            useGrouping:false,
+            minimumFractionDigits:0,
+            maximumFractionDigits:12
+        }
+    );
 }
 
 
 function money(v) {
 
-    const n = Number(v) || 0;
+    const n =
+        Number(v) || 0;
 
-    return n.toLocaleString("en-US", {
-        style:"currency",
-        currency:"USD",
-        minimumFractionDigits:2,
-        maximumFractionDigits:2
-    });
+    return n.toLocaleString(
+        "en-US",
+        {
+            style:"currency",
+            currency:"USD",
+            minimumFractionDigits:2,
+            maximumFractionDigits:2
+        }
+    );
 }
 
 
 function num(v, d = 2) {
 
-    const n = Number(v);
+    const n =
+        Number(v);
 
     if (!Number.isFinite(n)) {
         return "0";
     }
 
-    return n.toLocaleString("en-US", {
-        minimumFractionDigits:0,
-        maximumFractionDigits:d
-    });
+    return n.toLocaleString(
+        "en-US",
+        {
+            minimumFractionDigits:0,
+            maximumFractionDigits:d
+        }
+    );
 }
 
 
-function pnlPercent(pnl, margin) {
+function pnlPercent(
+    pnl,
+    margin
+) {
 
-    const p = Number(pnl) || 0;
-    const m = Number(margin) || 0;
+    const p =
+        Number(pnl) || 0;
+
+    const m =
+        Number(margin) || 0;
 
     if (m <= 0) {
         return 0;
@@ -1822,9 +2105,16 @@ function pnlPercent(pnl, margin) {
 }
 
 
-function formatPnl(pnl, margin) {
+function formatPnl(
+    pnl,
+    margin
+) {
 
-    const pct = pnlPercent(pnl, margin);
+    const pct =
+        pnlPercent(
+            pnl,
+            margin
+        );
 
     const d =
         (pnl >= 0 ? "+" : "") +
@@ -1832,7 +2122,7 @@ function formatPnl(pnl, margin) {
 
     const p =
         (pct >= 0 ? "+" : "") +
-        num(pct, 2) +
+        num(pct,2) +
         "%";
 
     return `
@@ -1855,7 +2145,10 @@ function escapeHtml(v) {
 
 function formatBytes(b) {
 
-    if (!Number.isFinite(b) || b <= 0) {
+    if (
+        !Number.isFinite(b) ||
+        b <= 0
+    ) {
         return "0 B";
     }
 
@@ -1867,19 +2160,29 @@ function formatBytes(b) {
         "TB"
     ];
 
-    const exponent = Math.min(
-        Math.floor(Math.log(b) / Math.log(1024)),
-        units.length - 1
-    );
+    const exponent =
+        Math.min(
+            Math.floor(
+                Math.log(b) /
+                Math.log(1024)
+            ),
+            units.length - 1
+        );
 
     const value =
-        b / Math.pow(1024, exponent);
+        b /
+        Math.pow(
+            1024,
+            exponent
+        );
 
     return (
         value >= 10
             ? value.toFixed(1)
             : value.toFixed(2)
-    ) + " " + units[exponent];
+    ) +
+    " " +
+    units[exponent];
 }
 
 
@@ -1887,27 +2190,43 @@ function formatBytes(b) {
    TOAST
 ===================================================== */
 
-function showToast(message, type = "success") {
+function showToast(
+    message,
+    type = "success"
+) {
 
     const toast =
-        document.getElementById("toast");
+        document.getElementById(
+            "toast"
+        );
 
-    if (!toast) return;
+    if (!toast) {
+        return;
+    }
 
-    clearTimeout(toastTimer);
+    clearTimeout(
+        toastTimer
+    );
 
-    toast.textContent = message;
+    toast.textContent =
+        message;
 
     toast.className =
         "toast " +
         type +
         " show";
 
-    toastTimer = setTimeout(() => {
+    toastTimer =
+        setTimeout(
+            () => {
 
-        toast.classList.remove("show");
+                toast.classList.remove(
+                    "show"
+                );
 
-    }, 3500);
+            },
+            3500
+        );
 }
 
 
@@ -1915,22 +2234,34 @@ function showToast(message, type = "success") {
    CLOUD STATUS
 ===================================================== */
 
-function setCloudStatus(state, text) {
+function setCloudStatus(
+    state,
+    text
+) {
 
     const dot =
-        document.getElementById("cloudDot");
+        document.getElementById(
+            "cloudDot"
+        );
 
     const txt =
-        document.getElementById("cloudText");
+        document.getElementById(
+            "cloudText"
+        );
 
-    if (!dot || !txt) {
+    if (
+        !dot ||
+        !txt
+    ) {
         return;
     }
 
     dot.className =
-        "cloud-dot " + state;
+        "cloud-dot " +
+        state;
 
-    txt.textContent = text;
+    txt.textContent =
+        text;
 }
 
 
@@ -1944,99 +2275,126 @@ function compressImageToBase64(
     quality = 0.72
 ) {
 
-    return new Promise((resolve, reject) => {
+    return new Promise(
+        (resolve, reject) => {
 
-        if (!file) {
-            resolve("");
-            return;
-        }
+            if (!file) {
 
-        const reader =
-            new FileReader();
+                resolve("");
 
-        reader.onload = (e) => {
+                return;
+            }
 
-            const img =
-                new Image();
+            const reader =
+                new FileReader();
 
-            img.onload = () => {
+            reader.onload =
+                (e) => {
 
-                let width = img.width;
-                let height = img.height;
+                    const img =
+                        new Image();
 
-                if (width > maxWidth) {
+                    img.onload =
+                        () => {
 
-                    height =
-                        Math.round(
-                            height *
-                            (maxWidth / width)
-                        );
+                            let width =
+                                img.width;
 
-                    width = maxWidth;
-                }
+                            let height =
+                                img.height;
 
-                const canvas =
-                    document.createElement("canvas");
+                            if (
+                                width >
+                                maxWidth
+                            ) {
 
-                canvas.width = width;
-                canvas.height = height;
+                                height =
+                                    Math.round(
+                                        height *
+                                        (
+                                            maxWidth /
+                                            width
+                                        )
+                                    );
 
-                const ctx =
-                    canvas.getContext("2d");
+                                width =
+                                    maxWidth;
+                            }
 
-                if (!ctx) {
+                            const canvas =
+                                document.createElement(
+                                    "canvas"
+                                );
+
+                            canvas.width =
+                                width;
+
+                            canvas.height =
+                                height;
+
+                            const ctx =
+                                canvas.getContext(
+                                    "2d"
+                                );
+
+                            if (!ctx) {
+
+                                reject(
+                                    new Error(
+                                        "Canvas tidak tersedia."
+                                    )
+                                );
+
+                                return;
+                            }
+
+                            ctx.drawImage(
+                                img,
+                                0,
+                                0,
+                                width,
+                                height
+                            );
+
+                            const base64 =
+                                canvas.toDataURL(
+                                    "image/jpeg",
+                                    quality
+                                );
+
+                            resolve(
+                                base64
+                            );
+                        };
+
+                    img.onerror =
+                        () => {
+
+                            reject(
+                                new Error(
+                                    "Gambar tidak dapat dibaca."
+                                )
+                            );
+                        };
+
+                    img.src =
+                        e.target.result;
+                };
+
+            reader.onerror =
+                () => {
+
                     reject(
+                        reader.error ||
                         new Error(
-                            "Canvas tidak tersedia."
+                            "Gagal membaca file."
                         )
                     );
+                };
 
-                    return;
-                }
-
-                ctx.drawImage(
-                    img,
-                    0,
-                    0,
-                    width,
-                    height
-                );
-
-                const base64 =
-                    canvas.toDataURL(
-                        "image/jpeg",
-                        quality
-                    );
-
-                resolve(base64);
-            };
-
-            img.onerror = () => {
-
-                reject(
-                    new Error(
-                        "Gambar tidak dapat dibaca."
-                    )
-                );
-
-            };
-
-            img.src = e.target.result;
-        };
-
-        reader.onerror = () => {
-
-            reject(
-                reader.error ||
-                new Error(
-                    "Gagal membaca file."
-                )
-            );
-
-        };
-
-        reader.readAsDataURL(file);
-    });
+            reader.readAsDataURL(file);
+        }
+    );
 }
 
 
@@ -2051,13 +2409,19 @@ function previewImage(
 ) {
 
     const input =
-        document.getElementById(inputId);
+        document.getElementById(
+            inputId
+        );
 
     const preview =
-        document.getElementById(previewId);
+        document.getElementById(
+            previewId
+        );
 
     const image =
-        document.getElementById(imageId);
+        document.getElementById(
+            imageId
+        );
 
     if (
         !input ||
@@ -2072,6 +2436,7 @@ function previewImage(
         input.files[0];
 
     if (!file) {
+
         removeImage(
             inputId,
             previewId,
@@ -2081,7 +2446,11 @@ function previewImage(
         return;
     }
 
-    if (!file.type.startsWith("image/")) {
+    if (
+        !file.type.startsWith(
+            "image/"
+        )
+    ) {
 
         showToast(
             "File harus berupa gambar.",
@@ -2100,13 +2469,16 @@ function previewImage(
     const reader =
         new FileReader();
 
-    reader.onload = (e) => {
+    reader.onload =
+        (e) => {
 
-        image.src =
-            e.target.result;
+            image.src =
+                e.target.result;
 
-        preview.classList.add("active");
-    };
+            preview.classList.add(
+                "active"
+            );
+        };
 
     reader.readAsDataURL(file);
 }
@@ -2119,13 +2491,19 @@ function removeImage(
 ) {
 
     const input =
-        document.getElementById(inputId);
+        document.getElementById(
+            inputId
+        );
 
     const preview =
-        document.getElementById(previewId);
+        document.getElementById(
+            previewId
+        );
 
     const image =
-        document.getElementById(imageId);
+        document.getElementById(
+            imageId
+        );
 
     if (input) {
         input.value = "";
@@ -2136,7 +2514,9 @@ function removeImage(
     }
 
     if (preview) {
-        preview.classList.remove("active");
+        preview.classList.remove(
+            "active"
+        );
     }
 }
 
@@ -2148,6 +2528,7 @@ function removeImage(
 function ensureAuth() {
 
     if (auth.currentUser) {
+
         return Promise.resolve(
             auth.currentUser
         );
@@ -2157,50 +2538,56 @@ function ensureAuth() {
         return authPromise;
     }
 
-    authPromise = new Promise(
-        async (resolve, reject) => {
+    authPromise =
+        new Promise(
+            async (
+                resolve,
+                reject
+            ) => {
 
-            try {
+                try {
 
-                setCloudStatus(
-                    "",
-                    "Menghubungkan ke cloud..."
-                );
-
-                let user =
-                    auth.currentUser;
-
-                if (!user) {
-
-                    const result =
-                        await auth.signInAnonymously();
-
-                    user = result.user;
-                }
-
-                if (!user) {
-                    throw new Error(
-                        "Autentikasi Firebase gagal."
+                    setCloudStatus(
+                        "",
+                        "Menghubungkan ke cloud..."
                     );
+
+                    let user =
+                        auth.currentUser;
+
+                    if (!user) {
+
+                        const result =
+                            await auth.signInAnonymously();
+
+                        user =
+                            result.user;
+                    }
+
+                    if (!user) {
+
+                        throw new Error(
+                            "Autentikasi Firebase gagal."
+                        );
+                    }
+
+                    resolve(user);
+
+                } catch (error) {
+
+                    console.error(
+                        "Firebase Auth Error:",
+                        error
+                    );
+
+                    reject(error);
+
+                } finally {
+
+                    authPromise = null;
                 }
-
-                resolve(user);
-
-            } catch (error) {
-
-                console.error(
-                    "Firebase Auth Error:",
-                    error
-                );
-
-                reject(error);
-
-            } finally {
-
-                authPromise = null;
             }
-        }
-    );
+        );
 
     return authPromise;
 }
@@ -2221,36 +2608,32 @@ async function loadFromCloud() {
 
         await ensureAuth();
 
+
         const balanceSnapshot =
             await db
                 .ref(BALANCE_PATH)
                 .get();
 
-        if (balanceSnapshot.exists()) {
+
+        if (
+            balanceSnapshot.exists()
+        ) {
 
             const value =
                 Number(
                     balanceSnapshot.val()
                 );
 
-            if (Number.isFinite(value)) {
-                balanceAwal = value;
+            if (
+                Number.isFinite(value)
+            ) {
+
+                balanceAwal =
+                    value;
             }
 
         } else {
 
-            /*
-             * JANGAN mengubah balanceAwal menjadi 0
-             * hanya karena node Firebase tidak ditemukan.
-             *
-             * Node yang tidak ada bisa terjadi karena:
-             * - data belum selesai termuat
-             * - rules/auth bermasalah
-             * - koneksi berubah
-             * - database node memang belum pernah dibuat
-             *
-             * State yang sudah ada dipertahankan.
-             */
             console.warn(
                 "[Cloud] Balance node tidak ditemukan. State lokal dipertahankan."
             );
@@ -2262,38 +2645,38 @@ async function loadFromCloud() {
                 .ref(TRADES_PATH)
                 .get();
 
-        if (tradesSnapshot.exists()) {
+
+        if (
+            tradesSnapshot.exists()
+        ) {
 
             const value =
                 tradesSnapshot.val();
 
             if (
                 value &&
-                typeof value === "object"
+                typeof value ===
+                "object"
             ) {
 
                 trades =
                     Object.keys(value)
-                        .map(key => {
+                        .map(
+                            key => {
 
-                            const trade =
-                                value[key];
+                                const trade =
+                                    value[key];
 
-                            return {
-                                id:key,
-                                ...(trade || {})
-                            };
-                        });
-
+                                return {
+                                    id:key,
+                                    ...(trade || {})
+                                };
+                            }
+                        );
             }
 
         } else {
 
-            /*
-             * JANGAN melakukan trades = [].
-             * Jika cloud sementara mengembalikan snapshot kosong,
-             * data state yang sudah ada tidak boleh dihapus.
-             */
             console.warn(
                 "[Cloud] Trades node tidak ditemukan. State lokal dipertahankan."
             );
@@ -2302,9 +2685,12 @@ async function loadFromCloud() {
 
         trades.sort(
             (a,b) =>
-                String(a.createdAt || "")
-                .localeCompare(
-                    String(b.createdAt || "")
+                String(
+                    a.createdAt || ""
+                ).localeCompare(
+                    String(
+                        b.createdAt || ""
+                    )
                 )
         );
 
@@ -2339,6 +2725,7 @@ async function loadFromCloud() {
             error.code ||
             "Unknown error";
 
+
         if (
             error.code ===
             "auth/admin-restricted-operation"
@@ -2354,8 +2741,8 @@ async function loadFromCloud() {
 
             message =
                 "Firebase Database Rules menolak akses.";
-
         }
+
 
         showToast(
             "Gagal memuat data: " +
@@ -2367,7 +2754,7 @@ async function loadFromCloud() {
 
 
 /* =====================================================
-   SAVE BALANCE
+   SAVE BALANCE TO CLOUD
 ===================================================== */
 
 async function saveBalanceToCloud() {
@@ -2386,9 +2773,14 @@ async function saveBalanceToCloud() {
    SAVE TRADE
 ===================================================== */
 
-async function saveTradeToCloud(trade) {
+async function saveTradeToCloud(
+    trade
+) {
 
-    if (!trade || !trade.id) {
+    if (
+        !trade ||
+        !trade.id
+    ) {
 
         throw new Error(
             "Trade ID tidak valid."
@@ -2417,7 +2809,9 @@ async function saveTradeToCloud(trade) {
    DELETE TRADE
 ===================================================== */
 
-async function deleteTradeFromCloud(id) {
+async function deleteTradeFromCloud(
+    id
+) {
 
     if (!id) {
         return;
@@ -2531,22 +2925,34 @@ async function updateStorageInfo() {
    CALCULATE TRADE
 ===================================================== */
 
-function hitungTrade(trade) {
+function hitungTrade(
+    trade
+) {
 
     const entry =
-        parsePrice(trade.entry);
+        parsePrice(
+            trade.entry
+        );
 
     const closePrice =
-        parsePrice(trade.closePrice);
+        parsePrice(
+            trade.closePrice
+        );
 
     const margin =
-        Number(trade.margin) || 0;
+        Number(
+            trade.margin
+        ) || 0;
 
     const leverage =
-        Number(trade.leverage) || 1;
+        Number(
+            trade.leverage
+        ) || 1;
 
     const sl =
-        parsePrice(trade.sl);
+        parsePrice(
+            trade.sl
+        );
 
     const tp =
         trade.hasTp
@@ -2563,7 +2969,8 @@ function hitungTrade(trade) {
 
         return {
             pnl:0,
-            notional:margin * leverage,
+            notional:
+                margin * leverage,
             quantity:0,
             rr:0
         };
@@ -2579,21 +2986,31 @@ function hitungTrade(trade) {
 
     let pnl = 0;
 
-    if (trade.arah === "Long") {
+
+    if (
+        trade.arah === "Long"
+    ) {
 
         pnl =
-            (closePrice - entry) *
+            (
+                closePrice -
+                entry
+            ) *
             quantity;
 
     } else {
 
         pnl =
-            (entry - closePrice) *
+            (
+                entry -
+                closePrice
+            ) *
             quantity;
     }
 
 
     let rr = 0;
+
 
     if (
         Number.isFinite(sl) &&
@@ -2603,13 +3020,19 @@ function hitungTrade(trade) {
     ) {
 
         const risk =
-            Math.abs(entry - sl);
+            Math.abs(
+                entry - sl
+            );
 
         const reward =
-            Math.abs(tp - entry);
+            Math.abs(
+                tp - entry
+            );
 
         if (risk > 0) {
-            rr = reward / risk;
+
+            rr =
+                reward / risk;
         }
     }
 
@@ -2641,17 +3064,24 @@ function openAddModal() {
 
     resetAddForm();
 
-    openModal("addModal");
+    openModal(
+        "addModal"
+    );
 }
 
 
 function openModal(id) {
 
     const modal =
-        document.getElementById(id);
+        document.getElementById(
+            id
+        );
 
     if (modal) {
-        modal.classList.add("active");
+
+        modal.classList.add(
+            "active"
+        );
     }
 }
 
@@ -2659,13 +3089,22 @@ function openModal(id) {
 function closeModal(id) {
 
     const modal =
-        document.getElementById(id);
+        document.getElementById(
+            id
+        );
 
     if (modal) {
-        modal.classList.remove("active");
+
+        modal.classList.remove(
+            "active"
+        );
     }
 }
 
+
+/* =====================================================
+   RESET ADD FORM
+===================================================== */
 
 function resetAddForm() {
 
@@ -2678,26 +3117,55 @@ function resetAddForm() {
         form.reset();
     }
 
+
+    /*
+     * Reset reCAPTCHA v2.
+     *
+     * Tidak menggunakan key App Check.
+     */
     if (
-        typeof grecaptcha !== "undefined" &&
-        typeof grecaptcha.reset === "function"
+        typeof grecaptcha !==
+        "undefined" &&
+        typeof grecaptcha.reset ===
+        "function"
     ) {
+
         try {
+
             grecaptcha.reset();
+
         } catch (e) {
-            console.warn("reCAPTCHA reset gagal:", e);
+
+            console.warn(
+                "reCAPTCHA reset gagal:",
+                e
+            );
         }
     }
 
-    document.getElementById(
-        "long"
-    ).checked = true;
 
-    document.getElementById(
-        "tpYes"
-    ).checked = true;
+    const long =
+        document.getElementById(
+            "long"
+        );
+
+    if (long) {
+        long.checked = true;
+    }
+
+
+    const tpYes =
+        document.getElementById(
+            "tpYes"
+        );
+
+    if (tpYes) {
+        tpYes.checked = true;
+    }
+
 
     toggleTpInput();
+
 
     removeImage(
         "entryImage",
@@ -2705,13 +3173,18 @@ function resetAddForm() {
         "entryPreviewImg"
     );
 
+
     const button =
         document.getElementById(
             "submitTradeBtn"
         );
 
+
     if (button) {
-        button.disabled = false;
+
+        button.disabled =
+            false;
+
         button.textContent =
             "Simpan Trade";
     }
@@ -2739,6 +3212,7 @@ function toggleTpInput() {
             "tp"
         );
 
+
     if (
         !yes ||
         !group ||
@@ -2747,20 +3221,25 @@ function toggleTpInput() {
         return;
     }
 
+
     if (yes.checked) {
 
         group.style.display =
             "block";
 
-        input.required = true;
+        input.required =
+            true;
 
     } else {
 
         group.style.display =
             "none";
 
-        input.required = false;
-        input.value = "";
+        input.required =
+            false;
+
+        input.value =
+            "";
     }
 }
 
@@ -2769,9 +3248,12 @@ function toggleTpInput() {
    SUBMIT TRADE
 ===================================================== */
 
-async function submitTrade(event) {
+async function submitTrade(
+    event
+) {
 
     event.preventDefault();
+
 
     if (!isReady) {
 
@@ -2786,7 +3268,9 @@ async function submitTrade(event) {
 
     const pair =
         document
-            .getElementById("pair")
+            .getElementById(
+                "pair"
+            )
             .value
             .trim()
             .toUpperCase();
@@ -2795,32 +3279,41 @@ async function submitTrade(event) {
     const arah =
         document.querySelector(
             'input[name="arah"]:checked'
-        )?.value || "Long";
+        )?.value ||
+        "Long";
 
 
     const entryInput =
         document
-            .getElementById("entry")
+            .getElementById(
+                "entry"
+            )
             .value
             .trim();
 
 
     const slInput =
         document
-            .getElementById("sl")
+            .getElementById(
+                "sl"
+            )
             .value
             .trim();
 
 
     const tpYes =
         document
-            .getElementById("tpYes")
+            .getElementById(
+                "tpYes"
+            )
             .checked;
 
 
     const tpInput =
         document
-            .getElementById("tp")
+            .getElementById(
+                "tp"
+            )
             .value
             .trim();
 
@@ -2828,7 +3321,9 @@ async function submitTrade(event) {
     const margin =
         Number(
             document
-                .getElementById("margin")
+                .getElementById(
+                    "margin"
+                )
                 .value
         );
 
@@ -2836,7 +3331,9 @@ async function submitTrade(event) {
     const leverage =
         Number(
             document
-                .getElementById("leverage")
+                .getElementById(
+                    "leverage"
+                )
                 .value
         );
 
@@ -2855,9 +3352,14 @@ async function submitTrade(event) {
 
 
     const entry =
-        parsePrice(entryInput);
+        parsePrice(
+            entryInput
+        );
 
-    if (!Number.isFinite(entry)) {
+
+    if (
+        !Number.isFinite(entry)
+    ) {
 
         showToast(
             "Entry Price tidak valid.",
@@ -2869,9 +3371,14 @@ async function submitTrade(event) {
 
 
     const sl =
-        parsePrice(slInput);
+        parsePrice(
+            slInput
+        );
 
-    if (!Number.isFinite(sl)) {
+
+    if (
+        !Number.isFinite(sl)
+    ) {
 
         showToast(
             "Stop Loss tidak valid.",
@@ -2884,12 +3391,18 @@ async function submitTrade(event) {
 
     let tp = 0;
 
+
     if (tpYes) {
 
         tp =
-            parsePrice(tpInput);
+            parsePrice(
+                tpInput
+            );
 
-        if (!Number.isFinite(tp)) {
+
+        if (
+            !Number.isFinite(tp)
+        ) {
 
             showToast(
                 "TP Price tidak valid.",
@@ -2930,27 +3443,56 @@ async function submitTrade(event) {
 
 
     /* =====================================================
-       reCAPTCHA VALIDATION
+       reCAPTCHA V2 VALIDATION
     ===================================================== */
 
     if (
-        typeof grecaptcha === "undefined" ||
-        typeof grecaptcha.getResponse !== "function"
+        typeof grecaptcha ===
+        "undefined" ||
+        typeof grecaptcha.getResponse !==
+        "function"
     ) {
+
         showToast(
             "reCAPTCHA belum siap. Tunggu beberapa detik lalu coba lagi.",
             "error"
         );
+
         return;
     }
 
-    const captchaResponse = grecaptcha.getResponse();
+
+    let captchaResponse = "";
+
+
+    try {
+
+        captchaResponse =
+            grecaptcha.getResponse();
+
+    } catch (error) {
+
+        console.error(
+            "reCAPTCHA error:",
+            error
+        );
+
+        showToast(
+            "reCAPTCHA belum siap. Refresh halaman lalu coba lagi.",
+            "error"
+        );
+
+        return;
+    }
+
 
     if (!captchaResponse) {
+
         showToast(
             "Silakan centang CAPTCHA terlebih dahulu.",
             "error"
         );
+
         return;
     }
 
@@ -2960,7 +3502,10 @@ async function submitTrade(event) {
             "submitTradeBtn"
         );
 
-    button.disabled = true;
+
+    button.disabled =
+        true;
+
     button.textContent =
         "Menyimpan...";
 
@@ -2970,7 +3515,9 @@ async function submitTrade(event) {
         await ensureAuth();
 
 
-        let entryImageBase64 = "";
+        let entryImageBase64 =
+            "";
+
 
         const entryImage =
             document
@@ -2990,42 +3537,52 @@ async function submitTrade(event) {
 
 
         const tradeRef =
-            db.ref(TRADES_PATH)
-                .push();
+            db.ref(
+                TRADES_PATH
+            ).push();
 
 
         const trade = {
 
-            id:tradeRef.key,
+            id:
+                tradeRef.key,
 
             pair,
 
             arah,
 
-            entry:entryInput,
+            entry:
+                entryInput,
 
-            sl:slInput,
+            sl:
+                slInput,
 
-            tp:tpYes
-                ? tpInput
-                : "0",
+            tp:
+                tpYes
+                    ? tpInput
+                    : "0",
 
-            hasTp:tpYes,
+            hasTp:
+                tpYes,
 
             margin,
 
             leverage,
 
-            status:"Wait",
+            status:
+                "Wait",
 
-            hasil:"",
+            hasil:
+                "",
 
-            closePrice:"0",
+            closePrice:
+                "0",
 
             entryImage:
                 entryImageBase64,
 
-            closeImage:"",
+            closeImage:
+                "",
 
             createdAt:
                 new Date().toISOString()
@@ -3036,19 +3593,28 @@ async function submitTrade(event) {
             ...trade
         };
 
+
         delete data.id;
 
 
-        await tradeRef.set(data);
+        await tradeRef.set(
+            data
+        );
 
 
-        trades.push(trade);
+        trades.push(
+            trade
+        );
+
 
         trades.sort(
             (a,b) =>
-                String(a.createdAt || "")
-                .localeCompare(
-                    String(b.createdAt || "")
+                String(
+                    a.createdAt || ""
+                ).localeCompare(
+                    String(
+                        b.createdAt || ""
+                    )
                 )
         );
 
@@ -3057,14 +3623,20 @@ async function submitTrade(event) {
 
         updateStorageInfo();
 
-        closeModal("addModal");
+
+        closeModal(
+            "addModal"
+        );
+
 
         resetAddForm();
+
 
         showToast(
             "Trade berhasil ditambahkan.",
             "success"
         );
+
 
     } catch (error) {
 
@@ -3072,6 +3644,7 @@ async function submitTrade(event) {
             "Submit trade error:",
             error
         );
+
 
         showToast(
             "Gagal menyimpan trade: " +
@@ -3085,7 +3658,9 @@ async function submitTrade(event) {
 
     } finally {
 
-        button.disabled = false;
+        button.disabled =
+            false;
+
         button.textContent =
             "Simpan Trade";
     }
@@ -3096,7 +3671,9 @@ async function submitTrade(event) {
    OPEN RESULT MODAL
 ===================================================== */
 
-function openResultModal(index) {
+function openResultModal(
+    index
+) {
 
     if (
         !trades[index]
@@ -3104,13 +3681,15 @@ function openResultModal(index) {
         return;
     }
 
+
     activeResultIndex =
         index;
 
 
     document.getElementById(
         "resultType"
-    ).value = "TP";
+    ).value =
+        "TP";
 
 
     removeImage(
@@ -3122,7 +3701,10 @@ function openResultModal(index) {
 
     updateClosePrice();
 
-    openModal("resultModal");
+
+    openModal(
+        "resultModal"
+    );
 }
 
 
@@ -3135,6 +3717,7 @@ function updateClosePrice() {
     const index =
         activeResultIndex;
 
+
     if (
         index === null ||
         !trades[index]
@@ -3146,10 +3729,12 @@ function updateClosePrice() {
     const trade =
         trades[index];
 
+
     const type =
         document.getElementById(
             "resultType"
         ).value;
+
 
     const closeInput =
         document.getElementById(
@@ -3163,7 +3748,8 @@ function updateClosePrice() {
 
 
     closeInput.readOnly =
-        type !== "MANUAL";
+        type !==
+        "MANUAL";
 
 
     if (type === "TP") {
@@ -3182,20 +3768,25 @@ function updateClosePrice() {
                 trade.entry;
         }
 
-    } else if (type === "SL") {
+    } else if (
+        type === "SL"
+    ) {
 
         closeInput.value =
-            trade.sl || trade.entry;
+            trade.sl ||
+            trade.entry;
 
-    } else if (type === "BE") {
+    } else if (
+        type === "BE"
+    ) {
 
         closeInput.value =
             trade.entry;
 
     } else {
 
-        closeInput.value = "";
-
+        closeInput.value =
+            "";
     }
 }
 
@@ -3215,7 +3806,9 @@ async function saveResult() {
 
 
     const trade =
-        trades[activeResultIndex];
+        trades[
+            activeResultIndex
+        ];
 
 
     const resultType =
@@ -3235,10 +3828,16 @@ async function saveResult() {
 
 
     const closePrice =
-        parsePrice(closePriceInput);
+        parsePrice(
+            closePriceInput
+        );
 
 
-    if (!Number.isFinite(closePrice)) {
+    if (
+        !Number.isFinite(
+            closePrice
+        )
+    ) {
 
         showToast(
             "Close Price tidak valid.",
@@ -3268,7 +3867,10 @@ async function saveResult() {
             "saveResultBtn"
         );
 
-    button.disabled = true;
+
+    button.disabled =
+        true;
+
     button.textContent =
         "Menyimpan...";
 
@@ -3278,7 +3880,9 @@ async function saveResult() {
         await ensureAuth();
 
 
-        let closeImageBase64 = "";
+        let closeImageBase64 =
+            "";
+
 
         const closeImage =
             document
@@ -3298,6 +3902,7 @@ async function saveResult() {
 
 
         const updatedTrade = {
+
             ...trade,
 
             closePrice:
@@ -3319,24 +3924,32 @@ async function saveResult() {
             );
 
 
-        if (resultType === "TP") {
+        if (
+            resultType === "TP"
+        ) {
 
             updatedTrade.hasil =
                 "Win";
 
-        } else if (resultType === "SL") {
+        } else if (
+            resultType === "SL"
+        ) {
 
             updatedTrade.hasil =
                 "Loss";
 
-        } else if (resultType === "BE") {
+        } else if (
+            resultType === "BE"
+        ) {
 
             updatedTrade.hasil =
                 "BE";
 
         } else {
 
-            if (calculated.pnl > 0) {
+            if (
+                calculated.pnl > 0
+            ) {
 
                 updatedTrade.hasil =
                     "Win";
@@ -3361,7 +3974,9 @@ async function saveResult() {
         );
 
 
-        trades[activeResultIndex] =
+        trades[
+            activeResultIndex
+        ] =
             updatedTrade;
 
 
@@ -3369,7 +3984,10 @@ async function saveResult() {
 
         updateStorageInfo();
 
-        closeModal("resultModal");
+
+        closeModal(
+            "resultModal"
+        );
 
 
         showToast(
@@ -3378,7 +3996,8 @@ async function saveResult() {
         );
 
 
-        activeResultIndex = null;
+        activeResultIndex =
+            null;
 
 
     } catch (error) {
@@ -3387,6 +4006,7 @@ async function saveResult() {
             "Save result error:",
             error
         );
+
 
         showToast(
             "Gagal menyimpan hasil: " +
@@ -3398,9 +4018,12 @@ async function saveResult() {
             "error"
         );
 
+
     } finally {
 
-        button.disabled = false;
+        button.disabled =
+            false;
+
         button.textContent =
             "Simpan Hasil";
     }
@@ -3411,10 +4034,13 @@ async function saveResult() {
    TOGGLE STATUS
 ===================================================== */
 
-async function toggleStatus(index) {
+async function toggleStatus(
+    index
+) {
 
     const trade =
         trades[index];
+
 
     if (!trade) {
         return;
@@ -3422,14 +4048,18 @@ async function toggleStatus(index) {
 
 
     const newStatus =
-        trade.status === "Triggered"
+        trade.status ===
+        "Triggered"
             ? "Wait"
             : "Triggered";
 
 
     const updatedTrade = {
+
         ...trade,
-        status:newStatus
+
+        status:
+            newStatus
     };
 
 
@@ -3439,22 +4069,28 @@ async function toggleStatus(index) {
             updatedTrade
         );
 
+
         trades[index] =
             updatedTrade;
 
+
         render();
+
 
         showToast(
             "Status trade diubah menjadi " +
-            newStatus + ".",
+            newStatus +
+            ".",
             "success"
         );
+
 
     } catch (error) {
 
         console.error(
             error
         );
+
 
         showToast(
             "Gagal mengubah status.",
@@ -3468,10 +4104,13 @@ async function toggleStatus(index) {
    DELETE TRADE
 ===================================================== */
 
-async function deleteTrade(index) {
+async function deleteTrade(
+    index
+) {
 
     const trade =
         trades[index];
+
 
     if (!trade) {
         return;
@@ -3514,12 +4153,14 @@ async function deleteTrade(index) {
             "success"
         );
 
+
     } catch (error) {
 
         console.error(
             "Delete trade error:",
             error
         );
+
 
         showToast(
             "Gagal menghapus trade.",
@@ -3533,10 +4174,13 @@ async function deleteTrade(index) {
    SHOW DETAIL
 ===================================================== */
 
-function showDetail(index) {
+function showDetail(
+    index
+) {
 
     const trade =
         trades[index];
+
 
     if (!trade) {
         return;
@@ -3544,7 +4188,9 @@ function showDetail(index) {
 
 
     const calc =
-        hitungTrade(trade);
+        hitungTrade(
+            trade
+        );
 
 
     const pnl =
@@ -3554,10 +4200,18 @@ function showDetail(index) {
     let pnlClass =
         "be";
 
+
     if (pnl > 0) {
-        pnlClass = "profit";
-    } else if (pnl < 0) {
-        pnlClass = "loss";
+
+        pnlClass =
+            "profit";
+
+    } else if (
+        pnl < 0
+    ) {
+
+        pnlClass =
+            "loss";
     }
 
 
@@ -3578,104 +4232,179 @@ function showDetail(index) {
 
             <div class="detail-item">
                 <div class="label">Pair</div>
+
                 <div class="value">
-                    ${escapeHtml(trade.pair || "-")}
+                    ${escapeHtml(
+                        trade.pair || "-"
+                    )}
                 </div>
             </div>
 
             <div class="detail-item">
                 <div class="label">Arah</div>
+
                 <div class="value">
-                    ${escapeHtml(trade.arah || "-")}
+                    ${escapeHtml(
+                        trade.arah || "-"
+                    )}
                 </div>
             </div>
 
             <div class="detail-item">
                 <div class="label">Entry Price</div>
+
                 <div class="value">
-                    ${escapeHtml(price(trade.entry))}
+                    ${escapeHtml(
+                        price(trade.entry)
+                    )}
                 </div>
             </div>
 
             <div class="detail-item">
                 <div class="label">Close Price</div>
+
                 <div class="value">
+
                     ${
                         trade.closePrice &&
-                        parsePrice(trade.closePrice)
+                        parsePrice(
+                            trade.closePrice
+                        )
                             ? escapeHtml(
-                                price(trade.closePrice)
+                                price(
+                                    trade.closePrice
+                                )
                             )
                             : "-"
                     }
+
                 </div>
             </div>
 
             <div class="detail-item">
                 <div class="label">Stop Loss</div>
+
                 <div class="value">
-                    ${escapeHtml(price(trade.sl))}
+                    ${escapeHtml(
+                        price(trade.sl)
+                    )}
                 </div>
             </div>
 
             <div class="detail-item">
-                <div class="label">Take Profit</div>
+
+                <div class="label">
+                    Take Profit
+                </div>
+
                 <div class="value">
+
                     ${
                         trade.hasTp
                             ? escapeHtml(
-                                price(trade.tp)
+                                price(
+                                    trade.tp
+                                )
                             )
                             : "Tanpa TP"
                     }
+
                 </div>
+
             </div>
 
             <div class="detail-item">
-                <div class="label">Margin</div>
-                <div class="value">
-                    ${money(trade.margin)}
+
+                <div class="label">
+                    Margin
                 </div>
+
+                <div class="value">
+                    ${money(
+                        trade.margin
+                    )}
+                </div>
+
             </div>
 
             <div class="detail-item">
-                <div class="label">Leverage</div>
-                <div class="value">
-                    ${num(trade.leverage,0)}x
+
+                <div class="label">
+                    Leverage
                 </div>
+
+                <div class="value">
+                    ${num(
+                        trade.leverage,
+                        0
+                    )}x
+                </div>
+
             </div>
 
             <div class="detail-item">
-                <div class="label">Notional</div>
-                <div class="value">
-                    ${money(calc.notional)}
+
+                <div class="label">
+                    Notional
                 </div>
+
+                <div class="value">
+                    ${money(
+                        calc.notional
+                    )}
+                </div>
+
             </div>
 
             <div class="detail-item">
-                <div class="label">Quantity</div>
-                <div class="value">
-                    ${num(calc.quantity,8)}
+
+                <div class="label">
+                    Quantity
                 </div>
+
+                <div class="value">
+                    ${num(
+                        calc.quantity,
+                        8
+                    )}
+                </div>
+
             </div>
 
             <div class="detail-item">
-                <div class="label">RR</div>
+
+                <div class="label">
+                    RR
+                </div>
+
                 <div class="value">
+
                     ${
                         calc.rr > 0
                             ? "1:" +
-                              num(calc.rr,2)
+                              num(
+                                  calc.rr,
+                                  2
+                              )
                             : "-"
                     }
+
                 </div>
+
             </div>
 
             <div class="detail-item">
-                <div class="label">Hasil</div>
-                <div class="value">
-                    ${escapeHtml(resultText)}
+
+                <div class="label">
+                    Hasil
                 </div>
+
+                <div class="value">
+                    ${escapeHtml(
+                        resultText
+                    )}
+                </div>
+
             </div>
 
             <div class="detail-item">
@@ -3698,7 +4427,9 @@ function showDetail(index) {
 
         <div class="detail-images">
 
-            <h4>Screenshot</h4>
+            <h4>
+                Screenshot
+            </h4>
 
             <div class="image-grid">
 
@@ -3715,7 +4446,9 @@ function showDetail(index) {
                                     src="${trade.entryImage}"
                                     alt="Entry"
                                     onclick="openBlobImage(
-                                        '${escapeForJs(trade.entryImage)}',
+                                        '${escapeForJs(
+                                            trade.entryImage
+                                        )}',
                                         'Screenshot Entry'
                                     )">
                             `
@@ -3742,7 +4475,9 @@ function showDetail(index) {
                                     src="${trade.closeImage}"
                                     alt="Close"
                                     onclick="openBlobImage(
-                                        '${escapeForJs(trade.closeImage)}',
+                                        '${escapeForJs(
+                                            trade.closeImage
+                                        )}',
                                         'Screenshot Close'
                                     )">
                             `
@@ -3761,7 +4496,9 @@ function showDetail(index) {
     `;
 
 
-    openModal("detailModal");
+    openModal(
+        "detailModal"
+    );
 }
 
 
@@ -3769,13 +4506,27 @@ function showDetail(index) {
    ESCAPE FOR JS IMAGE
 ===================================================== */
 
-function escapeForJs(value) {
+function escapeForJs(
+    value
+) {
 
     return String(value)
-        .replace(/\\/g,"\\\\")
-        .replace(/'/g,"\\'")
-        .replace(/\n/g,"\\n")
-        .replace(/\r/g,"\\r");
+        .replace(
+            /\\/g,
+            "\\\\"
+        )
+        .replace(
+            /'/g,
+            "\\'"
+        )
+        .replace(
+            /\n/g,
+            "\\n"
+        )
+        .replace(
+            /\r/g,
+            "\\r"
+        );
 }
 
 
@@ -3798,19 +4549,24 @@ function openBlobImage(
             "fullImage"
         );
 
+
     const titleElement =
         document.getElementById(
             "imageModalTitle"
         );
 
 
-    image.src = src;
+    image.src =
+        src;
+
 
     titleElement.textContent =
         title;
 
 
-    openModal("imageModal");
+    openModal(
+        "imageModal"
+    );
 }
 
 
@@ -3825,6 +4581,7 @@ function openStoredImage(
 
     const trade =
         trades[index];
+
 
     if (!trade) {
         return;
@@ -3855,9 +4612,13 @@ function openStoredImage(
    BADGES
 ===================================================== */
 
-function statusBadge(status) {
+function statusBadge(
+    status
+) {
 
-    if (status === "Triggered") {
+    if (
+        status === "Triggered"
+    ) {
 
         return `
             <span class="badge badge-triggered">
@@ -3865,6 +4626,7 @@ function statusBadge(status) {
             </span>
         `;
     }
+
 
     return `
         <span class="badge badge-wait">
@@ -3874,9 +4636,13 @@ function statusBadge(status) {
 }
 
 
-function resultBadge(result) {
+function resultBadge(
+    result
+) {
 
-    if (result === "Win") {
+    if (
+        result === "Win"
+    ) {
 
         return `
             <span class="badge badge-win">
@@ -3886,7 +4652,9 @@ function resultBadge(result) {
     }
 
 
-    if (result === "Loss") {
+    if (
+        result === "Loss"
+    ) {
 
         return `
             <span class="badge badge-loss">
@@ -3896,7 +4664,9 @@ function resultBadge(result) {
     }
 
 
-    if (result === "BE") {
+    if (
+        result === "BE"
+    ) {
 
         return `
             <span class="badge badge-be">
@@ -3925,6 +4695,7 @@ function renderTrades() {
             "tradeTableBody"
         );
 
+
     if (!tbody) {
         return;
     }
@@ -3943,39 +4714,50 @@ function renderTrades() {
 
 
     const filtered =
-        trades.filter(trade => {
+        trades.filter(
+            trade => {
 
-            const statusMatch =
-                statusFilter === "all" ||
-                trade.status === statusFilter;
+                const statusMatch =
+                    statusFilter ===
+                    "all" ||
+                    trade.status ===
+                    statusFilter;
 
 
-            let resultMatch = true;
+                let resultMatch =
+                    true;
 
 
-            if (resultFilter === "none") {
+                if (
+                    resultFilter ===
+                    "none"
+                ) {
 
-                resultMatch =
-                    !trade.hasil;
+                    resultMatch =
+                        !trade.hasil;
 
-            } else if (
-                resultFilter !== "all"
-            ) {
+                } else if (
+                    resultFilter !==
+                    "all"
+                ) {
 
-                resultMatch =
-                    trade.hasil ===
-                    resultFilter;
+                    resultMatch =
+                        trade.hasil ===
+                        resultFilter;
+                }
+
+
+                return (
+                    statusMatch &&
+                    resultMatch
+                );
             }
+        );
 
 
-            return (
-                statusMatch &&
-                resultMatch
-            );
-        });
-
-
-    if (filtered.length === 0) {
+    if (
+        filtered.length === 0
+    ) {
 
         tbody.innerHTML = `
 
@@ -4003,205 +4785,232 @@ function renderTrades() {
 
 
     tbody.innerHTML =
-        filtered.map(
-            (trade) => {
+        filtered
+            .map(
+                trade => {
 
-                const index =
-                    trades.indexOf(trade);
-
-
-                const calc =
-                    hitungTrade(trade);
-
-
-                const pnl =
-                    calc.pnl;
+                    const index =
+                        trades.indexOf(
+                            trade
+                        );
 
 
-                let pnlClass =
-                    "be";
+                    const calc =
+                        hitungTrade(
+                            trade
+                        );
 
 
-                if (pnl > 0) {
-
-                    pnlClass =
-                        "profit";
-
-                } else if (pnl < 0) {
-
-                    pnlClass =
-                        "loss";
-                }
+                    const pnl =
+                        calc.pnl;
 
 
-                const gambar = `
+                    let pnlClass =
+                        "be";
 
-                    ${
-                        trade.entryImage
-                            ? `
-                                <span
-                                    class="image-badge"
-                                    onclick="openStoredImage(
-                                        ${index},
-                                        'entry'
-                                    )">
-                                    Entry
-                                </span>
-                            `
-                            : ""
+
+                    if (
+                        pnl > 0
+                    ) {
+
+                        pnlClass =
+                            "profit";
+
+                    } else if (
+                        pnl < 0
+                    ) {
+
+                        pnlClass =
+                            "loss";
                     }
 
-                    ${
-                        trade.closeImage
-                            ? `
-                                <span
-                                    class="image-badge"
-                                    onclick="openStoredImage(
-                                        ${index},
-                                        'close'
-                                    )">
-                                    Close
-                                </span>
-                            `
-                            : ""
-                    }
 
-                    ${
-                        !trade.entryImage &&
-                        !trade.closeImage
-                            ? `
-                                <span class="no-image">
-                                    -
-                                </span>
-                            `
-                            : ""
-                    }
-                `;
+                    const gambar = `
+
+                        ${
+                            trade.entryImage
+                                ? `
+                                    <span
+                                        class="image-badge"
+                                        onclick="openStoredImage(
+                                            ${index},
+                                            'entry'
+                                        )">
+                                        Entry
+                                    </span>
+                                `
+                                : ""
+                        }
+
+                        ${
+                            trade.closeImage
+                                ? `
+                                    <span
+                                        class="image-badge"
+                                        onclick="openStoredImage(
+                                            ${index},
+                                            'close'
+                                        )">
+                                        Close
+                                    </span>
+                                `
+                                : ""
+                        }
+
+                        ${
+                            !trade.entryImage &&
+                            !trade.closeImage
+                                ? `
+                                    <span class="no-image">
+                                        -
+                                    </span>
+                                `
+                                : ""
+                        }
+                    `;
 
 
-                return `
+                    return `
 
-                    <tr>
+                        <tr>
 
-                        <td>
-                            ${index + 1}
-                        </td>
+                            <td>
+                                ${index + 1}
+                            </td>
 
-                        <td>
-                            <strong>
+                            <td>
+                                <strong>
+                                    ${escapeHtml(
+                                        trade.pair ||
+                                        "-"
+                                    )}
+                                </strong>
+                            </td>
+
+                            <td>
                                 ${escapeHtml(
-                                    trade.pair || "-"
+                                    trade.arah ||
+                                    "-"
                                 )}
-                            </strong>
-                        </td>
+                            </td>
 
-                        <td>
-                            ${escapeHtml(
-                                trade.arah || "-"
-                            )}
-                        </td>
-
-                        <td>
-                            ${escapeHtml(
-                                price(trade.entry)
-                            )}
-                        </td>
-
-                        <td>
-                            ${escapeHtml(
-                                price(trade.sl)
-                            )}
-                        </td>
-
-                        <td>
-                            ${
-                                trade.hasTp
-                                    ? escapeHtml(
-                                        price(trade.tp)
+                            <td>
+                                ${escapeHtml(
+                                    price(
+                                        trade.entry
                                     )
-                                    : "-"
-                            }
-                        </td>
+                                )}
+                            </td>
 
-                        <td>
-                            ${money(trade.margin)}
-                        </td>
-
-                        <td>
-                            ${num(
-                                trade.leverage,
-                                0
-                            )}x
-                        </td>
-
-                        <td>
-                            ${statusBadge(
-                                trade.status
-                            )}
-                        </td>
-
-                        <td>
-                            ${resultBadge(
-                                trade.hasil
-                            )}
-                        </td>
-
-                        <td class="${pnlClass}">
-                            ${
-                                trade.hasil
-                                    ? formatPnl(
-                                        pnl,
-                                        trade.margin
+                            <td>
+                                ${escapeHtml(
+                                    price(
+                                        trade.sl
                                     )
-                                    : "-"
-                            }
-                        </td>
+                                )}
+                            </td>
 
-                        <td>
-                            ${gambar}
-                        </td>
+                            <td>
 
-                        <td>
+                                ${
+                                    trade.hasTp
+                                        ? escapeHtml(
+                                            price(
+                                                trade.tp
+                                            )
+                                        )
+                                        : "-"
+                                }
 
-                            <div class="actions">
+                            </td>
 
-                                <button
-                                    class="action-btn"
-                                    onclick="showDetail(${index})">
-                                    Detail
-                                </button>
+                            <td>
+                                ${money(
+                                    trade.margin
+                                )}
+                            </td>
 
-                                <button
-                                    class="action-btn"
-                                    onclick="openResultModal(${index})">
-                                    Close
-                                </button>
+                            <td>
+                                ${num(
+                                    trade.leverage,
+                                    0
+                                )}x
+                            </td>
 
-                                <button
-                                    class="action-btn"
-                                    onclick="toggleStatus(${index})">
-                                    ${
-                                        trade.status ===
-                                        "Triggered"
-                                            ? "Wait"
-                                            : "Trigger"
-                                    }
-                                </button>
+                            <td>
+                                ${statusBadge(
+                                    trade.status
+                                )}
+                            </td>
 
-                                <button
-                                    class="action-btn danger"
-                                    onclick="deleteTrade(${index})">
-                                    Hapus
-                                </button>
+                            <td>
+                                ${resultBadge(
+                                    trade.hasil
+                                )}
+                            </td>
 
-                            </div>
+                            <td
+                                class="${pnlClass}">
 
-                        </td>
+                                ${
+                                    trade.hasil
+                                        ? formatPnl(
+                                            pnl,
+                                            trade.margin
+                                        )
+                                        : "-"
+                                }
 
-                    </tr>
-                `;
-            }
-        ).join("");
+                            </td>
+
+                            <td>
+                                ${gambar}
+                            </td>
+
+                            <td>
+
+                                <div class="actions">
+
+                                    <button
+                                        class="action-btn"
+                                        onclick="showDetail(${index})">
+                                        Detail
+                                    </button>
+
+                                    <button
+                                        class="action-btn"
+                                        onclick="openResultModal(${index})">
+                                        Close
+                                    </button>
+
+                                    <button
+                                        class="action-btn"
+                                        onclick="toggleStatus(${index})">
+
+                                        ${
+                                            trade.status ===
+                                            "Triggered"
+                                                ? "Wait"
+                                                : "Trigger"
+                                        }
+
+                                    </button>
+
+                                    <button
+                                        class="action-btn danger"
+                                        onclick="deleteTrade(${index})">
+                                        Hapus
+                                    </button>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    `;
+                }
+            )
+            .join("");
 }
 
 
@@ -4211,57 +5020,82 @@ function renderTrades() {
 
 function updateStats() {
 
-    let totalPnl = 0;
-    let totalProfit = 0;
-    let totalLoss = 0;
+    let totalPnl =
+        0;
 
-    let closedTrades = 0;
-    let wins = 0;
+    let totalProfit =
+        0;
+
+    let totalLoss =
+        0;
+
+    let closedTrades =
+        0;
+
+    let wins =
+        0;
 
 
-    trades.forEach(trade => {
+    trades.forEach(
+        trade => {
 
-        if (!trade.hasil) {
-            return;
+            if (!trade.hasil) {
+                return;
+            }
+
+
+            closedTrades++;
+
+
+            const calc =
+                hitungTrade(
+                    trade
+                );
+
+
+            const pnl =
+                Number(
+                    calc.pnl
+                ) || 0;
+
+
+            totalPnl +=
+                pnl;
+
+
+            if (
+                pnl > 0
+            ) {
+
+                totalProfit +=
+                    pnl;
+
+                wins++;
+
+            } else if (
+                pnl < 0
+            ) {
+
+                totalLoss +=
+                    Math.abs(pnl);
+            }
         }
-
-
-        closedTrades++;
-
-
-        const calc =
-            hitungTrade(trade);
-
-
-        const pnl =
-            Number(calc.pnl) || 0;
-
-
-        totalPnl += pnl;
-
-
-        if (pnl > 0) {
-
-            totalProfit += pnl;
-            wins++;
-
-        } else if (pnl < 0) {
-
-            totalLoss +=
-                Math.abs(pnl);
-        }
-    });
+    );
 
 
     const winRate =
         closedTrades > 0
-            ? (wins / closedTrades) * 100
+            ? (
+                wins /
+                closedTrades
+            ) * 100
             : 0;
 
 
     const profitFactor =
         totalLoss > 0
-            ? totalProfit / totalLoss
+            ? totalProfit /
+              totalLoss
             : (
                 totalProfit > 0
                     ? Infinity
@@ -4277,13 +5111,17 @@ function updateStats() {
     document.getElementById(
         "currentBalance"
     ).textContent =
-        money(currentBalance);
+        money(
+            currentBalance
+        );
 
 
     document.getElementById(
         "totalPnl"
     ).textContent =
-        money(totalPnl);
+        money(
+            totalPnl
+        );
 
 
     document.getElementById(
@@ -4295,42 +5133,54 @@ function updateStats() {
     document.getElementById(
         "winRate"
     ).textContent =
-        num(winRate,2) +
+        num(
+            winRate,
+            2
+        ) +
         "%";
 
 
     document.getElementById(
         "totalProfit"
     ).textContent =
-        money(totalProfit);
+        money(
+            totalProfit
+        );
 
 
     document.getElementById(
         "totalLoss"
     ).textContent =
-        money(totalLoss);
+        money(
+            totalLoss
+        );
 
 
     document.getElementById(
         "profitFactor"
     ).textContent =
-        profitFactor === Infinity
+        profitFactor ===
+        Infinity
             ? "∞"
-            : num(profitFactor,2);
+            : num(
+                profitFactor,
+                2
+            );
 
 
     document.getElementById(
         "startingBalance"
     ).textContent =
-        money(balanceAwal);
+        money(
+            balanceAwal
+        );
 
-
-    /* COLOR TOTAL PNL */
 
     const pnlElement =
         document.getElementById(
             "totalPnl"
         );
+
 
     pnlElement.classList.remove(
         "green",
@@ -4338,13 +5188,17 @@ function updateStats() {
     );
 
 
-    if (totalPnl > 0) {
+    if (
+        totalPnl > 0
+    ) {
 
         pnlElement.classList.add(
             "green"
         );
 
-    } else if (totalPnl < 0) {
+    } else if (
+        totalPnl < 0
+    ) {
 
         pnlElement.classList.add(
             "red"
@@ -4352,12 +5206,11 @@ function updateStats() {
     }
 
 
-    /* COLOR CURRENT BALANCE */
-
     const balanceElement =
         document.getElementById(
             "currentBalance"
         );
+
 
     balanceElement.classList.remove(
         "green",
@@ -4365,14 +5218,18 @@ function updateStats() {
     );
 
 
-    if (currentBalance > balanceAwal) {
+    if (
+        currentBalance >
+        balanceAwal
+    ) {
 
         balanceElement.classList.add(
             "green"
         );
 
     } else if (
-        currentBalance < balanceAwal
+        currentBalance <
+        balanceAwal
     ) {
 
         balanceElement.classList.add(
@@ -4400,55 +5257,114 @@ function render() {
 
 function openBalanceModal() {
 
-    const input = document.getElementById("balanceAmount");
-    const before = document.getElementById("balanceBeforeAdd");
-    const after = document.getElementById("balanceAfterAdd");
+    const input =
+        document.getElementById(
+            "balanceAmount"
+        );
+
+    const before =
+        document.getElementById(
+            "balanceBeforeAdd"
+        );
+
+    const after =
+        document.getElementById(
+            "balanceAfterAdd"
+        );
+
 
     if (input) {
         input.value = "";
     }
 
+
     if (before) {
-        before.textContent = money(balanceAwal);
+
+        before.textContent =
+            money(
+                balanceAwal
+            );
     }
+
 
     if (after) {
-        after.textContent = money(balanceAwal);
+
+        after.textContent =
+            money(
+                balanceAwal
+            );
     }
 
-    const modal = document.getElementById("balanceModal");
+
+    const modal =
+        document.getElementById(
+            "balanceModal"
+        );
+
 
     if (modal) {
-        modal.classList.add("active");
+
+        modal.classList.add(
+            "active"
+        );
     }
 
-    setTimeout(() => {
-        if (input) {
-            input.focus();
-        }
-    }, 100);
+
+    setTimeout(
+        () => {
+
+            if (input) {
+                input.focus();
+            }
+
+        },
+        100
+    );
 }
 
 
 function updateBalancePreview() {
 
-    const input = document.getElementById("balanceAmount");
-    const after = document.getElementById("balanceAfterAdd");
+    const input =
+        document.getElementById(
+            "balanceAmount"
+        );
 
-    if (!input || !after) {
+    const after =
+        document.getElementById(
+            "balanceAfterAdd"
+        );
+
+
+    if (
+        !input ||
+        !after
+    ) {
         return;
     }
 
-    const amount = Number(input.value);
+
+    const amount =
+        Number(
+            input.value
+        );
+
 
     const safeAmount =
-        Number.isFinite(amount) && amount > 0
+        Number.isFinite(
+            amount
+        ) &&
+        amount > 0
             ? amount
             : 0;
 
+
     after.textContent =
         money(
-            (Number(balanceAwal) || 0) +
+            (
+                Number(balanceAwal) ||
+                0
+            ) +
             safeAmount
         );
 }
@@ -4456,16 +5372,32 @@ function updateBalancePreview() {
 
 async function saveBalance() {
 
-    const input = document.getElementById("balanceAmount");
-    const button = document.getElementById("saveBalanceBtn");
+    const input =
+        document.getElementById(
+            "balanceAmount"
+        );
+
+    const button =
+        document.getElementById(
+            "saveBalanceBtn"
+        );
+
 
     if (!input) {
         return;
     }
 
-    const amount = Number(input.value);
 
-    if (!Number.isFinite(amount) || amount <= 0) {
+    const amount =
+        Number(
+            input.value
+        );
+
+
+    if (
+        !Number.isFinite(amount) ||
+        amount <= 0
+    ) {
 
         showToast(
             "Masukkan jumlah balance yang valid.",
@@ -4473,10 +5405,15 @@ async function saveBalance() {
         );
 
         input.focus();
+
         return;
     }
 
-    if (amount > 1000000000) {
+
+    if (
+        amount >
+        1000000000
+    ) {
 
         showToast(
             "Jumlah balance terlalu besar.",
@@ -4486,67 +5423,118 @@ async function saveBalance() {
         return;
     }
 
+
     try {
 
         if (button) {
-            button.disabled = true;
-            button.textContent = "Menyimpan...";
+
+            button.disabled =
+                true;
+
+            button.textContent =
+                "Menyimpan...";
         }
+
 
         await ensureAuth();
 
-        /*
-         * Ambil nilai terbaru langsung dari Firebase sebelum menambah.
-         * Ini mencegah penambahan memakai nilai balance lama.
-         */
+
         const snapshot =
-            await db.ref(BALANCE_PATH).get();
+            await db
+                .ref(BALANCE_PATH)
+                .get();
+
 
         let currentBalance =
-            Number(balanceAwal) || 0;
+            Number(
+                balanceAwal
+            ) || 0;
 
-        if (snapshot.exists()) {
+
+        if (
+            snapshot.exists()
+        ) {
 
             const cloudBalance =
-                Number(snapshot.val());
+                Number(
+                    snapshot.val()
+                );
 
-            if (Number.isFinite(cloudBalance)) {
-                currentBalance = cloudBalance;
+
+            if (
+                Number.isFinite(
+                    cloudBalance
+                )
+            ) {
+
+                currentBalance =
+                    cloudBalance;
             }
         }
 
+
         const newBalance =
-            currentBalance + amount;
+            currentBalance +
+            amount;
 
 
         await db
             .ref(BALANCE_PATH)
-            .set(newBalance);
+            .set(
+                newBalance
+            );
 
 
-        /*
-         * Simpan riwayat deposit secara terpisah.
-         * Deposit tidak dihitung sebagai PnL.
-         */
         const historyRef =
-            db.ref(BALANCE_HISTORY_PATH).push();
+            db
+                .ref(
+                    BALANCE_HISTORY_PATH
+                )
+                .push();
+
 
         await historyRef.set({
-            type: "deposit",
-            amount: amount,
-            balanceBefore: currentBalance,
-            balanceAfter: newBalance,
-            createdAt: new Date().toISOString()
+
+            type:
+                "deposit",
+
+            amount:
+                amount,
+
+            balanceBefore:
+                currentBalance,
+
+            balanceAfter:
+                newBalance,
+
+            createdAt:
+                new Date()
+                    .toISOString()
         });
 
 
-        balanceAwal = newBalance;
+        balanceAwal =
+            newBalance;
 
-        backupToLocal();
+
+        /*
+         * backupToLocal() DIHAPUS.
+         *
+         * Fungsi tersebut tidak ada di kode sebelumnya
+         * dan menyebabkan error setelah Firebase berhasil
+         * menyimpan balance.
+         */
+
+
         render();
+
         updateStorageInfo();
 
-        closeModal("balanceModal");
+
+        closeModal(
+            "balanceModal"
+        );
+
 
         showToast(
             "Balance berhasil ditambahkan " +
@@ -4555,12 +5543,14 @@ async function saveBalance() {
             "success"
         );
 
+
     } catch (error) {
 
         console.error(
             "Add balance error:",
             error
         );
+
 
         showToast(
             "Gagal menambah balance: " +
@@ -4572,11 +5562,16 @@ async function saveBalance() {
             "error"
         );
 
+
     } finally {
 
         if (button) {
-            button.disabled = false;
-            button.textContent = "Tambah Balance";
+
+            button.disabled =
+                false;
+
+            button.textContent =
+                "Tambah Balance";
         }
     }
 }
@@ -4588,8 +5583,10 @@ document.addEventListener(
 
         if (
             event.target &&
-            event.target.id === "balanceAmount"
+            event.target.id ===
+            "balanceAmount"
         ) {
+
             updateBalancePreview();
         }
     }
@@ -4621,32 +5618,33 @@ async function resetData() {
         await ensureAuth();
 
 
-        /*
-         * Gunakan nilai eksplisit untuk reset, bukan remove().
-         *
-         * Ini penting karena listener sekarang sengaja mengabaikan
-         * snapshot yang tidak ada agar tidak menyebabkan data hilang
-         * akibat kondisi cloud sementara.
-         */
         await Promise.all([
 
             db
-                .ref(TRADES_PATH)
+                .ref(
+                    TRADES_PATH
+                )
                 .set({}),
 
             db
-                .ref(BALANCE_PATH)
+                .ref(
+                    BALANCE_PATH
+                )
                 .set(0),
 
             db
-                .ref(BALANCE_HISTORY_PATH)
+                .ref(
+                    BALANCE_HISTORY_PATH
+                )
                 .set({})
         ]);
 
 
-        trades = [];
+        trades =
+            [];
 
-        balanceAwal = 0;
+        balanceAwal =
+            0;
 
 
         render();
@@ -4659,12 +5657,14 @@ async function resetData() {
             "success"
         );
 
+
     } catch (error) {
 
         console.error(
             "Reset error:",
             error
         );
+
 
         showToast(
             "Gagal reset data: " +
@@ -4684,25 +5684,30 @@ async function resetData() {
 ===================================================== */
 
 document
-    .querySelectorAll(".modal-overlay")
-    .forEach(modal => {
+    .querySelectorAll(
+        ".modal-overlay"
+    )
+    .forEach(
+        modal => {
 
-        modal.addEventListener(
-            "click",
-            event => {
+            modal.addEventListener(
+                "click",
+                event => {
 
-                if (
-                    event.target === modal
-                ) {
+                    if (
+                        event.target ===
+                        modal
+                    ) {
 
-                    modal.classList.remove(
-                        "active"
-                    );
+                        modal.classList.remove(
+                            "active"
+                        );
+                    }
                 }
-            }
-        );
+            );
 
-    });
+        }
+    );
 
 
 /* =====================================================
@@ -4713,21 +5718,27 @@ document.addEventListener(
     "keydown",
     event => {
 
-        if (event.key !== "Escape") {
+        if (
+            event.key !==
+            "Escape"
+        ) {
             return;
         }
+
 
         document
             .querySelectorAll(
                 ".modal-overlay.active"
             )
-            .forEach(modal => {
+            .forEach(
+                modal => {
 
-                modal.classList.remove(
-                    "active"
-                );
+                    modal.classList.remove(
+                        "active"
+                    );
 
-            });
+                }
+            );
     }
 );
 
@@ -4739,14 +5750,19 @@ document.addEventListener(
 function monitorConnection() {
 
     const connectedRef =
-        db.ref(".info/connected");
+        db.ref(
+            ".info/connected"
+        );
 
 
     connectedRef.on(
         "value",
         snapshot => {
 
-            if (snapshot.val() === true) {
+            if (
+                snapshot.val() ===
+                true
+            ) {
 
                 if (isReady) {
 
@@ -4774,98 +5790,92 @@ function monitorConnection() {
 
 function listenRealtimeTrades() {
 
-    db.ref(TRADES_PATH)
-        .on(
-            "value",
-            snapshot => {
+    db.ref(
+        TRADES_PATH
+    ).on(
+        "value",
+        snapshot => {
 
-                if (!isReady) {
-                    return;
-                }
-
-
-                /*
-                 * PENTING:
-                 * Jangan pernah mengosongkan `trades` hanya karena
-                 * snapshot tidak ada / bernilai null.
-                 *
-                 * Jika node Firebase hilang sementara, state yang sudah
-                 * tampil dipertahankan agar listener tidak menyebabkan
-                 * data "menghilang" secara tiba-tiba.
-                 *
-                 * Reset data yang disengaja dilakukan oleh fungsi
-                 * resetData(), bukan oleh listener.
-                 */
-
-                if (!snapshot.exists()) {
-
-                    console.warn(
-                        "[Realtime] Trades snapshot kosong/tidak ada. State dipertahankan."
-                    );
-
-                    return;
-                }
+            if (!isReady) {
+                return;
+            }
 
 
-                const value =
-                    snapshot.val();
+            if (
+                !snapshot.exists()
+            ) {
+
+                console.warn(
+                    "[Realtime] Trades snapshot kosong/tidak ada. State dipertahankan."
+                );
+
+                return;
+            }
 
 
-                if (
-                    !value ||
-                    typeof value !== "object"
-                ) {
-
-                    console.warn(
-                        "[Realtime] Format trades tidak valid. State dipertahankan."
-                    );
-
-                    return;
-                }
+            const value =
+                snapshot.val();
 
 
-                trades =
-                    Object.keys(value)
-                        .map(key => {
+            if (
+                !value ||
+                typeof value !==
+                "object"
+            ) {
+
+                console.warn(
+                    "[Realtime] Format trades tidak valid. State dipertahankan."
+                );
+
+                return;
+            }
+
+
+            trades =
+                Object.keys(value)
+                    .map(
+                        key => {
 
                             return {
                                 id:key,
                                 ...(value[key] || {})
                             };
 
-                        });
+                        }
+                    );
 
 
-                trades.sort(
-                    (a,b) =>
+            trades.sort(
+                (a,b) =>
+                    String(
+                        a.createdAt || ""
+                    ).localeCompare(
                         String(
-                            a.createdAt || ""
-                        ).localeCompare(
-                            String(
-                                b.createdAt || ""
-                            )
+                            b.createdAt || ""
                         )
-                );
+                    )
+            );
 
 
-                render();
+            render();
 
-                updateStorageInfo();
-            },
+            updateStorageInfo();
+        },
 
-            error => {
+        error => {
 
-                console.error(
-                    "Realtime listener error:",
-                    error
-                );
+            console.error(
+                "Realtime listener error:",
+                error
+            );
 
-                setCloudStatus(
-                    "offline",
-                    "Database tidak dapat diakses"
-                );
-            }
-        );
+
+            setCloudStatus(
+                "offline",
+                "Database tidak dapat diakses"
+            );
+        }
+    );
 }
 
 
@@ -4875,56 +5885,57 @@ function listenRealtimeTrades() {
 
 function listenRealtimeBalance() {
 
-    db.ref(BALANCE_PATH)
-        .on(
-            "value",
-            snapshot => {
+    db.ref(
+        BALANCE_PATH
+    ).on(
+        "value",
+        snapshot => {
 
-                /*
-                 * Jangan reset balanceAwal ke 0 hanya karena snapshot
-                 * tidak ada. Pertahankan state terakhir yang valid.
-                 */
-                if (!snapshot.exists()) {
+            if (
+                !snapshot.exists()
+            ) {
 
-                    console.warn(
-                        "[Realtime] Balance snapshot kosong/tidak ada. State dipertahankan."
-                    );
+                console.warn(
+                    "[Realtime] Balance snapshot kosong/tidak ada. State dipertahankan."
+                );
 
-                    return;
-                }
-
-
-                const value =
-                    Number(
-                        snapshot.val()
-                    );
+                return;
+            }
 
 
-                if (
-                    Number.isFinite(value)
-                ) {
+            const value =
+                Number(
+                    snapshot.val()
+                );
 
-                    balanceAwal =
-                        value;
 
-                    render();
+            if (
+                Number.isFinite(
+                    value
+                )
+            ) {
 
-                } else {
+                balanceAwal =
+                    value;
 
-                    console.warn(
-                        "[Realtime] Nilai balance tidak valid. State dipertahankan."
-                    );
-                }
-            },
+                render();
 
-            error => {
+            } else {
 
-                console.error(
-                    "Balance listener error:",
-                    error
+                console.warn(
+                    "[Realtime] Nilai balance tidak valid. State dipertahankan."
                 );
             }
-        );
+        },
+
+        error => {
+
+            console.error(
+                "Balance listener error:",
+                error
+            );
+        }
+    );
 }
 
 
@@ -4940,9 +5951,11 @@ document.addEventListener(
 
         updateStorageInfo();
 
+
         try {
 
             await loadFromCloud();
+
 
             if (isReady) {
 
