@@ -842,6 +842,23 @@ tr:hover td {
         align-items:flex-start;
     }
 }
+
+/* ANNOUNCEMENTS */
+.announcement-section { margin: 0 0 25px; }
+.announcement-list { display:grid; gap:12px; padding:16px; }
+.announcement-card { background:var(--panel2); border:1px solid var(--border); border-left:4px solid var(--blue); border-radius:10px; padding:15px; }
+.announcement-card.rule { border-left-color:var(--yellow); }
+.announcement-card.note { border-left-color:var(--green); }
+.announcement-top { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:8px; }
+.announcement-title { font-size:15px; font-weight:700; overflow-wrap:anywhere; }
+.announcement-meta { color:var(--muted); font-size:11px; margin-top:5px; }
+.announcement-content { color:var(--text); font-size:13px; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere; }
+.announcement-actions { display:flex; gap:6px; flex-shrink:0; }
+.announcement-empty { padding:24px 16px; text-align:center; color:var(--muted); font-size:13px; }
+.announcement-type { display:inline-block; padding:4px 8px; border-radius:999px; font-size:10px; font-weight:700; background:var(--blue-bg); color:var(--blue); margin-bottom:8px; }
+.announcement-card.rule .announcement-type { background:var(--yellow-bg); color:var(--yellow); }
+.announcement-card.note .announcement-type { background:var(--green-bg); color:var(--green); }
+
 </style>
 
 <!-- Google reCAPTCHA v2 -->
@@ -897,6 +914,17 @@ tr:hover td {
         <span id="cloudText">
             Menghubungkan ke cloud...
         </span>
+    </div>
+
+    <!-- CATATAN & ATURAN / ANNOUNCEMENT -->
+    <div class="panel announcement-section">
+        <div class="panel-header">
+            <h2>Catatan &amp; Aturan</h2>
+            <button class="btn btn-primary" onclick="openAnnouncementModal()">+ Tambah Announcement</button>
+        </div>
+        <div id="announcementList" class="announcement-list">
+            <div class="announcement-empty">Memuat catatan dan aturan...</div>
+        </div>
     </div>
 
     <!-- MAIN STATS -->
@@ -1822,6 +1850,39 @@ tr:hover td {
 </div>
 
 
+
+<!-- ADD / EDIT ANNOUNCEMENT MODAL -->
+<div class="modal-overlay" id="announcementModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 id="announcementModalTitle">Tambah Announcement</h3>
+            <button class="close-btn" onclick="closeModal('announcementModal')">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="announcementType">Kategori</label>
+                <select id="announcementType">
+                    <option value="note">Catatan</option>
+                    <option value="rule">Aturan</option>
+                    <option value="announcement">Announcement</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="announcementTitle">Judul</label>
+                <input id="announcementTitle" type="text" maxlength="120" placeholder="Masukkan judul" required>
+            </div>
+            <div class="form-group">
+                <label for="announcementContent">Isi catatan / aturan</label>
+                <textarea id="announcementContent" rows="6" maxlength="5000" placeholder="Tuliskan catatan atau aturan di sini..." style="width:100%;resize:vertical;background:#0d131a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:11px 12px;font:inherit;line-height:1.5" required></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal('announcementModal')">Batal</button>
+            <button class="btn btn-primary" id="saveAnnouncementBtn" onclick="saveAnnouncement()">Simpan</button>
+        </div>
+    </div>
+</div>
+
 <div
     id="toast"
     class="toast">
@@ -1965,6 +2026,9 @@ const BALANCE_PATH =
 const BALANCE_HISTORY_PATH =
     "balanceHistory";
 
+const ANNOUNCEMENTS_PATH =
+    "announcements";
+
 
 /* =====================================================
    STATE
@@ -1981,6 +2045,8 @@ let toastTimer = null;
 let isReady = false;
 
 let authPromise = null;
+let announcements = [];
+let editingAnnouncementId = null;
 
 
 /* =====================================================
@@ -5679,6 +5745,135 @@ async function resetData() {
 }
 
 
+
+/* =====================================================
+   ANNOUNCEMENTS: CATATAN / ATURAN
+===================================================== */
+
+function openAnnouncementModal(id = null) {
+    if (!isReady) {
+        showToast("Tunggu sampai cloud terhubung.", "error");
+        return;
+    }
+
+    editingAnnouncementId = id;
+    const item = id ? announcements.find(a => a.id === id) : null;
+    document.getElementById("announcementModalTitle").textContent =
+        item ? "Edit Announcement" : "Tambah Announcement";
+    document.getElementById("announcementType").value = item?.type || "note";
+    document.getElementById("announcementTitle").value = item?.title || "";
+    document.getElementById("announcementContent").value = item?.content || "";
+    document.getElementById("saveAnnouncementBtn").textContent = item ? "Simpan Perubahan" : "Simpan";
+    openModal("announcementModal");
+}
+
+async function saveAnnouncement() {
+    const title = document.getElementById("announcementTitle").value.trim();
+    const content = document.getElementById("announcementContent").value.trim();
+    const type = document.getElementById("announcementType").value;
+
+    if (!title || !content) {
+        showToast("Judul dan isi announcement wajib diisi.", "error");
+        return;
+    }
+
+    const btn = document.getElementById("saveAnnouncementBtn");
+    btn.disabled = true;
+    try {
+        await ensureAuth();
+        const payload = {
+            title,
+            content,
+            type,
+            updatedAt: new Date().toISOString()
+        };
+
+        if (editingAnnouncementId) {
+            const oldItem = announcements.find(a => a.id === editingAnnouncementId);
+            payload.createdAt = oldItem?.createdAt || payload.updatedAt;
+            await db.ref(ANNOUNCEMENTS_PATH + "/" + editingAnnouncementId).update(payload);
+            showToast("Announcement berhasil diperbarui.", "success");
+        } else {
+            payload.createdAt = payload.updatedAt;
+            await db.ref(ANNOUNCEMENTS_PATH).push(payload);
+            showToast("Announcement berhasil ditambahkan.", "success");
+        }
+
+        closeModal("announcementModal");
+        editingAnnouncementId = null;
+    } catch (error) {
+        console.error("Announcement save error:", error);
+        showToast("Gagal menyimpan announcement: " + (error.message || "Unknown error"), "error");
+    } finally {
+        btn.disabled = false;
+    }
+}
+
+async function deleteAnnouncement(id) {
+    const item = announcements.find(a => a.id === id);
+    if (!item) return;
+
+    if (!confirm('Hapus announcement "' + item.title + '"? Tindakan ini tidak dapat dibatalkan.')) {
+        return;
+    }
+
+    try {
+        await ensureAuth();
+        await db.ref(ANNOUNCEMENTS_PATH + "/" + id).remove();
+        showToast("Announcement berhasil dihapus.", "success");
+    } catch (error) {
+        console.error("Announcement delete error:", error);
+        showToast("Gagal menghapus announcement: " + (error.message || "Unknown error"), "error");
+    }
+}
+
+function renderAnnouncements() {
+    const container = document.getElementById("announcementList");
+    if (!container) return;
+
+    if (!announcements.length) {
+        container.innerHTML = '<div class="announcement-empty">Belum ada catatan atau aturan. Klik “Tambah Announcement” untuk membuatnya.</div>';
+        return;
+    }
+
+    const labels = { note: "CATATAN", rule: "ATURAN", announcement: "ANNOUNCEMENT" };
+    container.innerHTML = announcements
+        .slice()
+        .sort((a, b) => String(b.updatedAt || b.createdAt || "").localeCompare(String(a.updatedAt || a.createdAt || "")))
+        .map(item => {
+            const type = ["note", "rule", "announcement"].includes(item.type) ? item.type : "note";
+            const date = item.updatedAt || item.createdAt;
+            const dateText = date ? new Date(date).toLocaleString("id-ID") : "";
+            return `
+                <article class="announcement-card ${type}">
+                    <div class="announcement-top">
+                        <div>
+                            <span class="announcement-type">${labels[type]}</span>
+                            <div class="announcement-title">${escapeHtml(item.title || "Tanpa judul")}</div>
+                            <div class="announcement-meta">${escapeHtml(dateText)}</div>
+                        </div>
+                        <div class="announcement-actions">
+                            <button class="action-btn" onclick="openAnnouncementModal('${item.id}')">Edit</button>
+                            <button class="action-btn danger" onclick="deleteAnnouncement('${item.id}')">Hapus</button>
+                        </div>
+                    </div>
+                    <div class="announcement-content">${escapeHtml(item.content || "")}</div>
+                </article>`;
+        }).join("");
+}
+
+function listenRealtimeAnnouncements() {
+    db.ref(ANNOUNCEMENTS_PATH).on("value", snapshot => {
+        const value = snapshot.val() || {};
+        announcements = Object.keys(value).map(id => ({ id, ...(value[id] || {}) }));
+        renderAnnouncements();
+        updateStorageInfo();
+    }, error => {
+        console.error("Announcement listener error:", error);
+        showToast("Catatan dan aturan tidak dapat dimuat.", "error");
+    });
+}
+
 /* =====================================================
    CLOSE MODAL WHEN CLICK OUTSIDE
 ===================================================== */
@@ -5964,6 +6159,7 @@ document.addEventListener(
                 listenRealtimeTrades();
 
                 listenRealtimeBalance();
+                listenRealtimeAnnouncements();
             }
 
         } catch (error) {
